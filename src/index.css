@@ -1,0 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Concert+One&family=Oswald:wght@300&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --primary-color: #f64b40;
+    --secondary-color: #008080;
+}

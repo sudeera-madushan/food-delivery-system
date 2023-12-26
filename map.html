@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bing Maps Point Selection</title>
+    <script type="text/javascript" src="https://www.bing.com/api/maps/mapcontrol?key=AhTs1NKD6MM19FxIHxv3kseOeji1BrzSQfcutMcPm1xxa5delVftdkNjkOQRkZ0O"></script>
+    <style>
+        #map {
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<p id="selectedPointInfo"></p>
+
+<script src="app.js"></script>
+<script>
+    let map;
+
+    function loadMapScenario() {
+        map = new Microsoft.Maps.Map(document.getElementById('map'), {
+            credentials: 'AhTs1NKD6MM19FxIHxv3kseOeji1BrzSQfcutMcPm1xxa5delVftdkNjkOQRkZ0O',
+            center: new Microsoft.Maps.Location(0, 0), // Default center
+            zoom: 2 // Default zoom level
+        });
+
+        // Add a click event listener to the map
+        Microsoft.Maps.Events.addHandler(map, 'click', onMapClick);
+    }
+
+    function onMapClick(e) {
+        const clickedLocation = e.location;
+
+        // Display the selected point information
+        document.getElementById('selectedPointInfo').innerHTML = `
+    <strong>Selected Point:</strong> (${clickedLocation.latitude.toFixed(4)}, ${clickedLocation.longitude.toFixed(4)})
+  `;
+
+        // Optionally, you can add a pushpin at the selected location
+        const pin = new Microsoft.Maps.Pushpin(clickedLocation, { color: 'red' });
+        map.entities.clear(); // Clear previous pins
+        map.entities.push(pin);
+    }
+
+</script>
+</body>
+</html>
