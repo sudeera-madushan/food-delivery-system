@@ -3,7 +3,7 @@ function RestaurantList() : JSX.Element {
     return (
         <section>
             <section className={'flex flex-col gap-5 items-center justify-center my-10'}>
-                <div className={' shadow-md border-gray-400 w-[90vw] rounded-xl bg-gray-100'}>
+                <div className={' shadow-md border-gray-400 w-[90vw] rounded-xl bg-gray-100 cursor-pointer'}>
                     <div className={'flex justify-between px-4 pt-2'}>
                         <h1 className={'font-concert-one text-2xl'}>Restaurant</h1>
                         <h1 className={'font-concert-one text-2xl'}>Colombo, Petta</h1>
