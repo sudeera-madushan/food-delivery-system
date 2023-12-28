@@ -3,6 +3,9 @@
     font-family: 'Concert One', sans-serif;
     /*font-family: 'Oswald', sans-serif;*/
 }
+.font-agbalumo {
+    font-family: 'Agbalumo',sans-serif;
+}
 
 header nav li:hover{
     color: whitesmoke;
@@ -37,4 +40,15 @@ header nav li{
 .scroll-pane::-webkit-scrollbar-track {
     background-color: transparent; /* Adjust the color as needed */
     height: 5px;
+}
+
+.custom-number-input {
+    -moz-appearance: textfield; /* Firefox */
+}
+
+/* remove input number arrows */
+.custom-number-input::-webkit-inner-spin-button,
+.custom-number-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
