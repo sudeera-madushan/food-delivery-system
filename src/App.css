@@ -52,3 +52,7 @@ header nav li{
     -webkit-appearance: none;
     margin: 0;
 }
+.progress span{
+    width: 25px;
+    height: 25px;
+}
