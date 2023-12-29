@@ -1,76 +1,39 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Fade from '@mui/material/Fade';
-import Button from '@mui/material/Button';
-import CircularProgress from '@mui/material/CircularProgress';
-import Typography from '@mui/material/Typography';
+import CircularProgress from "@mui/material-next/CircularProgress";
+import {FaCheckCircle} from "react-icons/fa";
+import {useEffect, useState} from "react";
 
-export default function DelayingAppearance() {
-    const [loading, setLoading] = React.useState(false);
-    const [query, setQuery] = React.useState('idle');
-    const timerRef = React.useRef<number>();
+export enum Type {
+    PENDING,DONE
+}
+interface Props {
+    state:Type,
+    show:boolean
+}
 
-    React.useEffect(
-        () => () => {
-            clearTimeout(timerRef.current);
-        },
-        [],
-    );
+export function Progress(props:Props):JSX.Element {
 
-    const handleClickLoading = () => {
-        setLoading((prevLoading) => !prevLoading);
-    };
+    const [showCircular, setShowCircular] = useState(true);
+    const [showCheck, setShowCheck] = useState(false);
 
-    const handleClickQuery = () => {
-        if (timerRef.current) {
-            clearTimeout(timerRef.current);
+    useEffect(() => {
+        // Show CircularProgress for 30 seconds
+        // const timeoutId = setTimeout(() => {
+        //     setShowCircular(false);
+        //     setShowCheck(true);
+        // }, props.timeout);
+
+        if (props.state === Type.DONE) {
+            setShowCircular(false);
+            setShowCheck(true);
         }
 
-        if (query !== 'idle') {
-            setQuery('idle');
-            return;
-        }
-
-        setQuery('progress');
-        timerRef.current = window.setTimeout(() => {
-            setQuery('success');
-        }, 2000);
-    };
-
+    }, []);
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <Box sx={{ height: 40 }}>
-                <Fade
-                    in={loading}
-                    style={{
-                        transitionDelay: loading ? '800ms' : '0ms',
-                    }}
-                    unmountOnExit
-                >
-                    <CircularProgress />
-                </Fade>
-            </Box>
-            <Button onClick={handleClickLoading} sx={{ m: 2 }}>
-                {loading ? 'Stop loading' : 'Loading'}
-            </Button>
-            <Box sx={{ height: 40 }}>
-                {query === 'success' ? (
-                    <Typography>Success!</Typography>
-                ) : (
-                    <Fade
-                        in={query === 'progress'}
-                        style={{
-                            transitionDelay: query === 'progress' ? '800ms' : '0ms',
-                        }}
-                        unmountOnExit
-                    >
-                        <CircularProgress />
-                    </Fade>
-                )}
-            </Box>
-            <Button onClick={handleClickQuery} sx={{ m: 2 }}>
-                {query !== 'idle' ? 'Reset' : 'Simulate a load'}
-            </Button>
-        </Box>
-    );
+        <div className={'w-[25px] h-[25px]'}>
+            <div className={` progress ${props.show ? '' : 'hidden'}`}>
+                 {showCircular && <CircularProgress className={''} />}
+                {showCheck && <FaCheckCircle className={'text-green-600 w-[25px] h-[25px]'} />}
+            </div>
+        </div>
+    )
 }
