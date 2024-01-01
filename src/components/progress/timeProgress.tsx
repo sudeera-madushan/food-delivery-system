@@ -29,6 +29,7 @@ function CircularProgressWithLabel(
                     variant="caption"
                     component="div"
                     color="text.secondary"
+                    className={'h-2'}
                 >{`${Math.round((props.value / 100) * props.time)}`}</Typography>
             </Box>
         </Box>
@@ -36,17 +37,17 @@ function CircularProgressWithLabel(
 }
 
 export default function TimeProgress(props:Props) {
-    const [progress, setProgress] = React.useState(0);
+    const [progress, setProgress] = React.useState(props.time);
 
     React.useEffect(() => {
         const timer = setInterval(() => {
             setProgress((prevProgress) =>
-                prevProgress >= 100 ? 0 : prevProgress + 1
+                prevProgress === 0 ? 0 : prevProgress - 1
             );
-        }, 100);
+        }, 1000);
 
         // Clear the interval once progress reaches 100%
-        if (progress >= 100) {
+        if (progress === 0) {
             clearInterval(timer);
         }
 
@@ -55,5 +56,5 @@ export default function TimeProgress(props:Props) {
         };
     }, [progress]);
 
-    return progress >= 100 ? <FaCheckCircle className={'text-green-600 w-[35px] h-[35px]'} /> : <CircularProgressWithLabel value={progress} time={props.time}/>;
+    return progress >= 100000 ? <FaCheckCircle className={'text-green-600 w-[35px] h-[35px]'} /> : <CircularProgressWithLabel value={progress} time={props.time} className={'w-2 h-2'}/>;
 }
