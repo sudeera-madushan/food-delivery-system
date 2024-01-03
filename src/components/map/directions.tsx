@@ -19,7 +19,7 @@ const BingMapComponent = () => {
         //     updateParentValue(time);
         // };
         const  getMap = async () => {
-            map = new window.Microsoft.Maps.Map('#myMap', {});
+            map = new window.Microsoft.Maps.Map('#myMapDirection', {});
 
             window.Microsoft.Maps.loadModule('Microsoft.Maps.Directions', () => {
                 directionsManager = new window.Microsoft.Maps.Directions.DirectionsManager(map);
@@ -63,7 +63,7 @@ const BingMapComponent = () => {
 
     return (
         <div>
-            <div id="myMap" style={{ position: 'relative', width: '800px', height: '600px' }}></div>
+            <div id="myMapDirection" style={{ position: 'relative', width: '800px', height: '600px' }}></div>
             <div id='routeInfoPanel'></div>
         </div>
     );

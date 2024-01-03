@@ -5,8 +5,8 @@ import ParentContext from "../context/orderRouteContext.ts";
 import {useState} from "react";
 
 function OrderRoute() : JSX.Element{
-    const [parentValue, setParentValue] = useState('Initial Value');
-    const updateParentValue = (newValue) => {
+    const [parentValue, setParentValue] = useState(0);
+    const updateParentValue = (newValue:number) => {
         setParentValue(newValue);
       };
     
