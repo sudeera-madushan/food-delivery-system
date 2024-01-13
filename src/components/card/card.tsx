@@ -1,5 +1,6 @@
 import {FaRegStar, FaStar} from "react-icons/fa";
 import {Link} from "react-router-dom";
+import axios from "axios";
 interface Props{
     img:string,
     title:string,
@@ -8,8 +9,17 @@ interface Props{
     rate:number
 }
 function Card(props:Props):JSX.Element {
+    function testReq() {
+        axios.get("http://localhost:8080/api/v1/menu/all")
+            .then(r => {
+                console.log(r);
+            })
+            .catch(e => {
+                console.log(e);
+            })
+    }
     return (
-            <div className={'flex-shrink-0 shadow-lg m-3 mt-1 rounded-xl w-72 bg-white'}>
+            <div className={'flex-shrink-0 shadow-lg m-3 mt-1 rounded-xl w-72 bg-white'} onClick={testReq}>
             <Link to={'/menu'}>
                 <div className={'m-2 flex h-0 justify-end'}>
                     {props.rate>0 ?  <FaStar className={'text-yellow-500'}/> : <FaRegStar />}

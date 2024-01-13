@@ -1,5 +1,5 @@
 // AhTs1NKD6MM19FxIHxv3kseOeji1BrzSQfcutMcPm1xxa5delVftdkNjkOQRkZ0O
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 const MapLocation = () => {
     const [selectedPoint, setSelectedPoint] = useState(null);

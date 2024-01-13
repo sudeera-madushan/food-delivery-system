@@ -8,6 +8,8 @@ import MenuList from "./view/menuList.tsx";
 import Menu from "./view/menu.tsx";
 import Cart from "./view/cart.tsx";
 import OrderRoute from './view/order-route.tsx';
+import RestaurantHome from "./view/restaurant/restauranthome.tsx";
+import CreateMenu from "./view/restaurant/createmenu..tsx";
 function App() {
     const apikey = 'AhTs1NKD6MM19FxIHxv3kseOeji1BrzSQfcutMcPm1xxa5delVftdkNjkOQRkZ0O';
 
@@ -22,6 +24,8 @@ function App() {
                         <Route path={'/menu/*'} element={<Menu/>}/>
                         <Route path={'/cart/*'} element={<Cart/>}/>
                         <Route path={'/route/*'} element={<OrderRoute/>}/>
+                        <Route path={'/restaurant-home/*'} element={<RestaurantHome/>}/>
+                        <Route path={'/menu-create/*'} element={<CreateMenu/>}/>
                     </Routes>
 
                     <Footer/>
