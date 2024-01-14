@@ -9,9 +9,9 @@ import Menu from "./view/menu.tsx";
 import Cart from "./view/cart.tsx";
 import OrderRoute from './view/order-route.tsx';
 import RestaurantHome from "./view/restaurant/restauranthome.tsx";
-import CreateMenu from "./view/restaurant/createmenu..tsx";
+import Createmenu from "./view/restaurant/createmenu.tsx";
 import RestaurantHeader from "./components/layout/restaurantheader.tsx";
-import MyMenus from "./view/restaurant/mymenus..tsx";
+import Mymenus from "./view/restaurant/mymenus.tsx";
 function App() {
     const apikey = 'AhTs1NKD6MM19FxIHxv3kseOeji1BrzSQfcutMcPm1xxa5delVftdkNjkOQRkZ0O';
 
@@ -37,8 +37,8 @@ function App() {
                             <RestaurantHeader/>
                             <Routes>
                                 <Route path={'/restaurant/home/*'} element={<RestaurantHome/>}/>
-                                <Route path={'/menu-create/*'} element={<CreateMenu/>}/>
-                                <Route path={'/my-menus/*'} element={<MyMenus/>}/>
+                                <Route path={'/menu-create/*'} element={<Createmenu/>}/>
+                                <Route path={'/my-menus/*'} element={<Mymenus/>}/>
                             </Routes>
                             </>
                         }/>

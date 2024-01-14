@@ -53,7 +53,7 @@ const RestaurantHeader = () => {
                         <CgMenuRightAlt className={'max-[856px]:inline-block mb-2 items-end text-4xl mr-[12px] text-[var(--primary-color)] hidden'} onClick={closeMenu}/>
                         <Link to={'/'} className={''}><li className={'max-[856px]:hover:rounded max-[856px]:mr-[5px]'}>Home</li></Link>
                         <Link to={'/restaurant-list'}><li className={'max-[856px]:hover:rounded max-[856px]:mr-[5px]'}>Orders</li></Link>
-                        <Link to={'/restaurant/my-menu'}><li className={'max-[856px]:hover:rounded max-[856px]:mr-[5px]'}>My Menus</li></Link>
+                        <Link to={'/restaurant/my-menus'}><li className={'max-[856px]:hover:rounded max-[856px]:mr-[5px]'}>My Menus</li></Link>
                         <li className={'max-[856px]:hover:rounded max-[856px]:mr-[5px]'}><CiUser className={'text-2xl bold'} />
                         </li>
                     </ul>
