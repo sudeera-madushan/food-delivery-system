@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 import {useNavigate} from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import {Backdrop} from "@mui/material";
-
+import { IoArrowBackCircleSharp } from "react-icons/io5";
 /**
  * author : Sudeera Madushan
  * date : 1/13/2024
@@ -54,6 +54,11 @@ const CreateMenu = ():JSX.Element => {
                 break;
         }
     }
+    const clearFields = ():void => {
+      setImage(null)
+        console.log(image)
+        setFoodName("")
+    }
     const saveMenu = () => {
         setOpen(true)
         let menu: Menu = {
@@ -64,6 +69,7 @@ const CreateMenu = ():JSX.Element => {
             openTime: openTime,
             closeTime: closeTime
         }
+                clearFields();
         axios.post("http://localhost:8080/api/v1/menu/save", menu)
             .then(r => {
                 setOpen(false);
@@ -85,22 +91,33 @@ const CreateMenu = ():JSX.Element => {
     }
 
   return (
-      <section>
-          <ImagePicker getImage={handleChange}/>
-          <Input handleEvent={handleChange} placeholder={"Food Name"} name={"foodName"} type={"text"}/>
-          <TextArea handleEvent={handleChange} placeholder={"Description"} name={"description"}/>
-          <Input handleEvent={handleChange} placeholder={"Food Price"} name={"price"} type={"number"}/>
-          <TimeRange placeholder={"Active"} handleEvent={handleChange}/>
-          <button
-              className={"bg-blue-600 text-white font-bold px-4 py-1 text-xl m-2 rounded hover:bg-blue-800"}
-              onClick={saveMenu}
-          >Save</button>
-          <Backdrop
-              sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-              open={open}
-          >
-              <CircularProgress color="inherit" />
-          </Backdrop>
+      <section className={"p-10 mx-32 border rounded shadow my-2 font-bold"}>
+              <div className={"flex m-2"}>
+                <IoArrowBackCircleSharp className={"text-[var(--primary-color)] text-5xl hover:text-rose-700 m-2"}/><br/>
+                <h1 className={"text-3xl font-agbalumo w-full text-center text-[var(--secondary-color)]"}>Create Menu</h1>
+              </div>
+          <div className={"flex justify-center"}>
+                  <ImagePicker getImage={handleChange}/>
+              <div className={"ml-20 w-96"}>
+                  <Input handleEvent={handleChange} placeholder={"Food Name"} name={"foodName"} type={"text"}/>
+                  <TextArea handleEvent={handleChange} placeholder={"Description"} name={"description"}/><br/>
+                  <Input handleEvent={handleChange} placeholder={"Food Price (LKR)"} name={"price"} type={"number"}/>
+                  <TimeRange placeholder={"Active"} handleEvent={handleChange}/>
+                  <div className={"text-right"}>
+                      <button
+                          className={"bg-blue-600 text-white font-bold px-4 py-1 text-xl m-2 rounded hover:bg-blue-800 "}
+                          onClick={saveMenu}
+                      >Save</button>
+                  </div>
+                  <Backdrop
+                      sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                      open={open}
+                  >
+                      <CircularProgress color="inherit" />
+                  </Backdrop>
+              </div>
+
+          </div>
       </section>
   )
 }

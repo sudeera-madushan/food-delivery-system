@@ -10,24 +10,39 @@ import Cart from "./view/cart.tsx";
 import OrderRoute from './view/order-route.tsx';
 import RestaurantHome from "./view/restaurant/restauranthome.tsx";
 import CreateMenu from "./view/restaurant/createmenu..tsx";
+import RestaurantHeader from "./components/layout/restaurantheader.tsx";
+import MyMenus from "./view/restaurant/mymenus..tsx";
 function App() {
     const apikey = 'AhTs1NKD6MM19FxIHxv3kseOeji1BrzSQfcutMcPm1xxa5delVftdkNjkOQRkZ0O';
 
         return (
             <>
                 <BrowserRouter>
-                    <Header/>
                     <Routes>
-                        <Route path={'/*'} element={<Home apikey={apikey}/>}/>
-                        <Route path={'/menu-list/*'} element={<MenuList/>}/>
-                        <Route path={'/restaurant-list/*'} element={<RestaurantList/>}/>
-                        <Route path={'/menu/*'} element={<Menu/>}/>
-                        <Route path={'/cart/*'} element={<Cart/>}/>
-                        <Route path={'/route/*'} element={<OrderRoute/>}/>
-                        <Route path={'/restaurant-home/*'} element={<RestaurantHome/>}/>
-                        <Route path={'/menu-create/*'} element={<CreateMenu/>}/>
+                        <Route path={'/*'} element={
+                            <>
+                                <Header/>
+                                <Routes>
+                                    <Route path={'/*'} element={<Home apikey={apikey}/>}/>
+                                    <Route path={'/menu-list/*'} element={<MenuList/>}/>
+                                    <Route path={'/restaurant-list/*'} element={<RestaurantList/>}/>
+                                    <Route path={'/menu/*'} element={<Menu/>}/>
+                                    <Route path={'/cart/*'} element={<Cart/>}/>
+                                    <Route path={'/route/*'} element={<OrderRoute/>}/>
+                                </Routes>
+                            </>
+                        }/>
+                        <Route path={'/restaurant/*'} element={
+                            <>
+                            <RestaurantHeader/>
+                            <Routes>
+                                <Route path={'/restaurant/home/*'} element={<RestaurantHome/>}/>
+                                <Route path={'/menu-create/*'} element={<CreateMenu/>}/>
+                                <Route path={'/my-menus/*'} element={<MyMenus/>}/>
+                            </Routes>
+                            </>
+                        }/>
                     </Routes>
-
                     <Footer/>
                 </BrowserRouter>
 

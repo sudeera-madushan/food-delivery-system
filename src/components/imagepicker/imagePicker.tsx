@@ -60,7 +60,7 @@ const ImagePicker = (props:Props) : JSX.Element => {
                     <img
                         src={selectedImage}
                         alt="Selected"
-                        className="w-44 h-44 rounded"
+                        className="w-44 rounded"
                         onChange={props.getImage(selectedImage,"image")}
                     />
                     <p className="mt-2">Selected Image</p>
