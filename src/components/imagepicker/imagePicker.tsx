@@ -3,9 +3,12 @@
  * date : 1/13/2024
  * project : food-delivery-system
  */
-import React, { useState, ChangeEvent, DragEvent } from 'react';
+import { useState, ChangeEvent, DragEvent } from 'react';
+interface Props {
+    getImage:Function
+}
 
-const ImagePicker: React.FC = () => {
+const ImagePicker = (props:Props) : JSX.Element => {
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
     const handleDrop = (e: DragEvent<HTMLDivElement>) => {
@@ -50,14 +53,15 @@ const ImagePicker: React.FC = () => {
         <div
             onDrop={handleDrop}
             onDragOver={handleDragOver}
-            className="border-2 border-dashed border-gray-300 rounded p-4 text-center cursor-pointer"
+            className="border-2 border-dashed border-gray-300 rounded p-4 text-center cursor-pointer w-52"
         >
             {selectedImage ? (
                 <div>
                     <img
                         src={selectedImage}
                         alt="Selected"
-                        className="max-w-full max-h-300px rounded"
+                        className="w-44 h-44 rounded"
+                        onChange={props.getImage(selectedImage,"image")}
                     />
                     <p className="mt-2">Selected Image</p>
                     <button
