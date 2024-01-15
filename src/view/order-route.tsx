@@ -9,11 +9,11 @@ function OrderRoute() : JSX.Element{
     const updateParentValue = (newValue:number) => {
         setParentValue(newValue);
       };
-    
-                    const contextValue = {
-                       parentValue,
-                       updateParentValue,
-                     };
+
+      const contextValue = {
+          parentValue,
+          updateParentValue,
+      };
 
     return (
         <ParentContext.Provider value={contextValue}>

@@ -1,12 +1,14 @@
 import ImagePicker from "../../components/imagepicker/imagePicker.tsx";
-import {useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import Input, {TextArea, TimeRange} from "../../components/input/input.tsx";
 import axios from "axios";
 import Swal from "sweetalert2";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import {Backdrop, Switch} from "@mui/material";
 import { IoArrowBackCircleSharp } from "react-icons/io5";
+import {BackdropContext} from "../../context/orderRouteContext.ts";
+import Cookies from "js-cookie";
 /**
  * author : Sudeera Madushan
  * date : 1/13/2024
@@ -21,20 +23,32 @@ interface Menu{
     closeTime: number,
     size: string[]|null
 }
-const Createmenu = ():JSX.Element => {
-
+const CreateMenu = ():JSX.Element => {
+    const { backdropValue, updateBackdropValue } = useContext(BackdropContext);
     const navigate = useNavigate();
-    const [image, setImage] = useState<any>();
-    const [foodName, setFoodName] = useState<string>("");
-    const [description, setDescription] = useState<string>("");
-    const [price, setPrice] = useState<number>(0);
-    const [openTime, setOpenTime] = useState<number>(0);
-    const [closeTime, setCloseTime] = useState<number>(0);
-    const [open, setOpen] = useState(false);
-    const [active, setActive] = useState(false);
-    const [sizeSmall, setSizeSmall] = useState(false);
-    const [sizeMedium, setSizeMedium] = useState(false);
-    const [sizeLarge, setSizeLarge] = useState(false);
+    const location = useLocation();
+    const menu = location?.state ?.menu;
+    const [image, setImage] = useState<any>(menu? menu.image : null);
+    const [foodName, setFoodName] = useState<string>(menu? menu.foodName : "");
+    const [description, setDescription] = useState<string>(menu ? menu.description : "");
+    const [price, setPrice] = useState<number>(menu ? menu.price : 0);
+    const [openTime, setOpenTime] = useState<number>(menu ? menu.openTime : 0);
+    const [closeTime, setCloseTime] = useState<number>(menu ? menu.closeTime : 0);
+    const [active, setActive] = useState(menu ? menu.size : false);
+    const [sizeSmall, setSizeSmall] = useState(menu ? menu.size.find(s => s === "Small") : false);
+    const [sizeMedium, setSizeMedium] = useState(menu ? menu.size.find(s => s === "Medium") : false);
+    const [sizeLarge, setSizeLarge] = useState(menu ? menu.size.find(s => s === "Large") : false);
+    const [btn, setBtn] = useState(menu ? "Update" : "Create");
+    const ACCESS_TOKEN = Cookies.get("restaurant");
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': ACCESS_TOKEN
+    }
+    useEffect(()=>{
+        updateBackdropValue(false);
+        console.log(menu)
+    },[]);
+
     const handleChange = (e:any, type:string) => {
         switch (type) {
             case "image":
@@ -60,8 +74,8 @@ const Createmenu = ():JSX.Element => {
         }
     }
 
-    const saveMenu = () => {
-        setOpen(true)
+    const hangeMenu = () => {
+        updateBackdropValue(true)
         let sizes: string[] | null = []
         if (active){
             if (sizeSmall){
@@ -76,7 +90,16 @@ const Createmenu = ():JSX.Element => {
         }else {
             sizes = null;
         }
-        let menu: Menu = {
+
+        if (menu) {
+            updateMenu(sizes)
+
+        } else {
+            saveMenu(sizes)
+        }
+    }
+    const saveMenu = (sizes : string[] | null) => {
+        let menuData: Menu = {
             image: image,
             foodName: foodName,
             description: description,
@@ -86,12 +109,10 @@ const Createmenu = ():JSX.Element => {
             size: sizes
         }
 
-        console.log(menu)
 
-
-        axios.post("http://localhost:8080/api/v1/menu/save", menu)
+        axios.post("http://localhost:8080/api/v1/menu/save", menuData,{headers: headers})
             .then(r => {
-                setOpen(false);
+                updateBackdropValue(false)
                 Swal.fire({
                     icon: "success",
                     title: "Success!",
@@ -100,7 +121,35 @@ const Createmenu = ():JSX.Element => {
                 navigate('/restaurant/my-menus');
             })
             .catch(e => {
-                setOpen(false);
+                updateBackdropValue(false)
+                Swal.fire({
+                    icon: "error",
+                    title: "Sorry!",
+                    text: "Something went wrong"
+                });
+            })
+    }
+    const updateMenu = (sizes : string[] | null) => {
+            menu.image = image;
+            menu.foodName = foodName;
+            menu.description = description;
+            menu.price = price;
+            menu.openTime = openTime;
+            menu.closeTime = closeTime;
+            menu.size = sizes;
+
+        axios.put("http://localhost:8080/api/v1/menu/update", menu, {headers: headers})
+            .then(r => {
+                updateBackdropValue(false)
+                Swal.fire({
+                    icon: "success",
+                    title: "Success!",
+                    text: "Menu Update successfully!"
+                });
+                navigate('/restaurant/my-menus');
+            })
+            .catch(e => {
+                updateBackdropValue(false)
                 Swal.fire({
                     icon: "error",
                     title: "Sorry!",
@@ -131,28 +180,23 @@ const Createmenu = ():JSX.Element => {
   return (
       <section className={"p-10 mx-32 border rounded shadow my-2 font-bold"}>
               <div className={"flex m-2"}>
-                <IoArrowBackCircleSharp className={"text-[var(--primary-color)] text-5xl hover:text-rose-700 m-2"}/><br/>
-                <h1 className={"text-3xl font-agbalumo w-full text-center text-[var(--secondary-color)]"}>Create Menu</h1>
+                <IoArrowBackCircleSharp className={"text-[var(--primary-color)] text-5xl hover:text-rose-700 m-2"}
+                                        onClick={() => navigate('/restaurant/my-menus')}/><br/>
+                <h1 className={"text-3xl font-agbalumo w-full text-center text-[var(--secondary-color)]"}>{btn} Menu</h1>
               </div>
           <div className={"flex justify-center"}>
-                  <ImagePicker getImage={handleChange}/>
+                  <ImagePicker getImage={handleChange} image={image}/>
               <div className={"ml-20 w-96"}>
-                  <Input handleEvent={handleChange} placeholder={"Food Name"} name={"foodName"} type={"text"}/>
-                  <TextArea handleEvent={handleChange} placeholder={"Description"} name={"description"}/><br/>
-                  <Input handleEvent={handleChange} placeholder={"Food Price (LKR)"} name={"price"} type={"number"}/>
-                  <TimeRange placeholder={"Active"} handleEvent={handleChange}/>
+                  <Input handleEvent={handleChange} placeholder={"Food Name"} name={"foodName"} type={"text"} value={foodName}/>
+                  <TextArea handleEvent={handleChange} placeholder={"Description"} name={"description"} value={description}/><br/>
+                  <Input handleEvent={handleChange} placeholder={"Food Price (LKR)"} name={"price"} type={"number"} value={price}/>
+                  <TimeRange placeholder={"Active"} handleEvent={handleChange} fromTime={openTime} toTime={closeTime}/>
                   <div className={"text-right"}>
                       <button
                           className={"bg-blue-600 text-white font-bold px-4 py-1 text-xl m-2 rounded hover:bg-blue-800 "}
-                          onClick={saveMenu}
-                      >Save</button>
+                          onClick={hangeMenu}
+                      >{btn}</button>
                   </div>
-                  <Backdrop
-                      sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                      open={open}
-                  >
-                      <CircularProgress color="inherit" />
-                  </Backdrop>
               </div>
               <div className={"ml-10"}>
                   <Switch
@@ -185,4 +229,4 @@ const Createmenu = ():JSX.Element => {
       </section>
   )
 }
-export default Createmenu;
+export default CreateMenu;

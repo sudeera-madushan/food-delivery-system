@@ -64,3 +64,6 @@ header nav li{
 .css-1o8dslu{
     height: 28px;
 }
+.MuiPaper-root{
+    max-width: 900px ! important;
+}

@@ -9,3 +9,10 @@ const ParentContext = createContext({
 });
 
 export default ParentContext;
+
+export const BackdropContext = createContext({
+    updateBackdropValue: (value: boolean) => {
+        this.backdropValue = value;
+    },
+    backdropValue: false
+})

@@ -1,6 +1,5 @@
 import ListCard from "../listcard..tsx";
 import {Switch} from "@mui/material";
-import {IMenu} from "../../../view/restaurant/mymenus.tsx";
 import {useState} from "react";
 
 /**
@@ -8,16 +7,25 @@ import {useState} from "react";
  * date : 1/14/2024
  * project : food-delivery-system
  */
+interface Menu {
+    image: string,
+    foodName: string,
+    description: string,
+    price: number,
+    openTime: string,
+    closeTime: string,
+    size: string[] | null,
+    restaurant ? : string,
+    handleEdite: Function
+}
 
-function  Menucard(props:IMenu):JSX.Element {
+function  MenuCard(props:Menu):JSX.Element {
 
     const [active, setActive] = useState(true)
     const handleChange = (e) => {
         setActive(e.target.checked);
     }
-    const editeMenu = (e) => {
-        console.log(active)
-    }
+
 
     return (
         <ListCard name={props.foodName} address={props.price.toString()+"LKR"} rate={5} children={
@@ -36,15 +44,17 @@ function  Menucard(props:IMenu):JSX.Element {
                                 <h1 className={"p-1 font-bold"}>{props.openTime} <span className={"font-mono"}>to</span> {props.closeTime}</h1>
                             </div>
                             {
-                                props.size ??
-                                    <div className={"p-5"}>
-                                        Size <br/>
-                                        {
-                                            props.size.map((data: string, index: number) => {
-                                                return <h1 className={"p-1 font-bold"}>{data}</h1>
-                                            })
-                                        }
-                                    </div>
+                                props.size ?
+                                    <div className={"pl-20 pt-5"}>
+                                        <p>Size</p>
+                                        <div className={"ml-2"}>
+                                            {
+                                                props.size.map((data: string, index: number) => {
+                                                    return <div><h1 className={"m-0 p-0 font-bold h-2"}>{data}</h1><br/></div>
+                                                })
+                                            }
+                                        </div>
+                                    </div> : null
                             }
                         </div>
                     </div>
@@ -56,11 +66,11 @@ function  Menucard(props:IMenu):JSX.Element {
 
                         />Active<br/>
                         <button className={" font-bold text-emerald-600 text-xl py-1 hover:bg-green-100 rounded-full p-2 m-5"}
-                                onClick={editeMenu}>Edite</button>
+                                onClick={props.handleEdite}>Edite</button>
                     </div>
                 </div>
             </div>
         }/>
     )
 }
-export default Menucard;
+export default MenuCard;

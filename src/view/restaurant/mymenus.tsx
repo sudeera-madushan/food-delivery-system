@@ -4,11 +4,15 @@
  * project : food-delivery-system
  */
 import {Backdrop} from "@mui/material";
-import Menucard from "../../components/card/restaurant/menucard.tsx";
-import {useEffect, useState} from "react";
+import MenuCard from "../../components/card/restaurant/menuCard.tsx";
+import {useContext, useEffect, useState} from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import CircularProgress from "@mui/material/CircularProgress";
+import Button from "../../components/button/button.tsx";
+import {useNavigate} from "react-router-dom";
+import ParentContext, {BackdropContext} from "../../context/orderRouteContext.ts";
+import Cookies from "js-cookie";
 
 export interface IMenu {
     image: string,
@@ -21,53 +25,63 @@ export interface IMenu {
     restaurant ? : string
 }
 function Mymenus() : JSX.Element {
-    const [open, setOpen] = useState(false);
+    const { backdropValue, updateBackdropValue } = useContext(BackdropContext);
     const [data, setData] = useState<IMenu[]>([]);
+    const navigate = useNavigate();
 
     useEffect(()=>{
-        setOpen(true)
+        updateBackdropValue(true)
         getMyMenus();
     },[]);
-
+    const ACCESS_TOKEN = Cookies.get("restaurant");
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': ACCESS_TOKEN
+    }
     const getMyMenus = () => {
-        axios.get("http://localhost:8080/api/v1/menu/all")
+        axios.get("http://localhost:8080/api/v1/menu/all", {headers: headers})
             .then(r => {
-                setOpen(false);
                 setData(r.data.data)
+                updateBackdropValue(false)
             })
             .catch(e => {
-                setOpen(false);
                 Swal.fire({
                     icon: "error",
                     title: "Sorry!",
                     text: "Something went wrong"
                 });
+                updateBackdropValue(false)
             })
+
+    }
+
+    const openCreateMenu = (e) => {
+        updateBackdropValue(true)
+        navigate("/restaurant/menu-create")
     }
 
 
     return (
         <section>
             <section className={'flex flex-col gap-5 items-center justify-center my-10'}>
+                <div className={"text-right w-[90vw]"}>
+                    <Button  name={"Create"} onClickEvent={openCreateMenu} bgColor={"bg-emerald-600"} bgColorHover={"bg-emerald-800"}/>
+                </div>
                 {
                     data.map((r:IMenu, i: number) => {
-                        return <Menucard
+                        return <MenuCard
                             image={r.image}
                             foodName={r.foodName}
                             description={r.description}
                             price={r.price}
                             openTime={r.openTime}
                             closeTime={r.closeTime}
-                            size={r.size}/>
+                            size={r.size}
+                            handleEdite={() => navigate('/restaurant/menu-create', {state: {menu: r}})}
+                        />
                     })
                 }
             </section>
-            <Backdrop
-                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                open={open}
-            >
-                <CircularProgress color="inherit" />
-            </Backdrop>
         </section>
     );
 }

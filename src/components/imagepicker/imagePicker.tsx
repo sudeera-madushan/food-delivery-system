@@ -5,11 +5,12 @@
  */
 import { useState, ChangeEvent, DragEvent } from 'react';
 interface Props {
-    getImage:Function
+    getImage:Function,
+    image:string
 }
 
 const ImagePicker = (props:Props) : JSX.Element => {
-    const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const [selectedImage, setSelectedImage] = useState<string | null>(props.image);
 
     const handleDrop = (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
