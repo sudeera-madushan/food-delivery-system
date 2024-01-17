@@ -18,6 +18,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import {Backdrop} from "@mui/material";
 import SignupRestaurant from './view/restaurant/signuprestaurant.tsx';
 import SignIn from "./view/signin.tsx";
+import SignUp from './view/signup.tsx';
 function App() {
     const apikey = 'AhTs1NKD6MM19FxIHxv3kseOeji1BrzSQfcutMcPm1xxa5delVftdkNjkOQRkZ0O';
     const [backdropValue, setBackdropValue] = useState(false);
@@ -45,6 +46,7 @@ function App() {
                                     <Route path={'/cart/*'} element={<Cart/>}/>
                                     <Route path={'/route/*'} element={<OrderRoute/>}/>
                                     <Route path={'/sign-in/*'} element={<SignIn/>}/>
+                                    <Route path={'/sign-up/*'} element={<SignUp/>}/>
                                 </Routes>
                             </>
                         }/>

@@ -1,12 +1,24 @@
 import { useState, useEffect } from 'react';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import SearchInput from "../input/searchInput.tsx";
 import { CgMenuRightAlt , CgMenuLeftAlt } from "react-icons/cg";
 import { CiUser } from "react-icons/ci";
+import Cookies from "js-cookie";
+import axios from "axios";
 const RestaurantHeader = () => {
+    const navigate = useNavigate();
     const [isScrolled, setIsScrolled] = useState(false);
+    const [loged, setLoged] = useState(false);
     const [cssClass, setCssClass] = useState<string>('translate-x-180');
+    const ACCESS_TOKEN = Cookies.get("restaurant");
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': ACCESS_TOKEN
+    }
+
+
     useEffect(() => {
+        auth();
         const handleScroll = () => {
             const scrolled = window.scrollY > 50;
             setIsScrolled(scrolled);
@@ -19,11 +31,30 @@ const RestaurantHeader = () => {
         };
     }, []);
 
+    const auth = () => {
+            axios.post("http://localhost:8080/api/v1/user/auth",{} ,{headers: headers})
+                .then(r => {
+                    if (r.data.data.restaurant){
+                        setLoged(true)
+                    }else if (r.data.data.user){
+                        setLoged(true)
+                    }else {
+                        setLoged(false)
+                    }
+                })
+                .catch(e => {
+                    navigate("sign-in")
+                })
+    }
+
     const openMenu = () => {
         setCssClass('translate-x-0')
     }
     const closeMenu = () => {
         setCssClass('translate-x-[180px]')
+    }
+    const accountNavigate = () => {
+        navigate("restaurant/account")
     }
 
     return (
@@ -54,8 +85,15 @@ const RestaurantHeader = () => {
                         <Link to={'/'} className={''}><li className={'max-[856px]:hover:rounded max-[856px]:mr-[5px]'}>Home</li></Link>
                         <Link to={'/restaurant-list'}><li className={'max-[856px]:hover:rounded max-[856px]:mr-[5px]'}>Orders</li></Link>
                         <Link to={'/restaurant/my-menus'}><li className={'max-[856px]:hover:rounded max-[856px]:mr-[5px]'}>My Menus</li></Link>
-                        <li className={'max-[856px]:hover:rounded max-[856px]:mr-[5px]'}><CiUser className={'text-2xl bold'} />
-                        </li>
+
+                            {
+                                loged ?
+                                    <li className={'max-[856px]:hover:rounded max-[856px]:mr-[5px]'}>
+                                        <CiUser className={'text-2xl bold'} onClick={accountNavigate}/></li> :
+                                    <Link to={'/sign-in'}><li className={'max-[856px]:hover:rounded max-[856px]:mr-[5px]'}>Sign In</li></Link>
+                            }
+
+
                     </ul>
                 </nav>
             </header>

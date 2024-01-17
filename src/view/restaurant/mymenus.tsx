@@ -3,18 +3,16 @@
  * date : 1/14/2024
  * project : food-delivery-system
  */
-import {Backdrop} from "@mui/material";
 import MenuCard from "../../components/card/restaurant/menuCard.tsx";
 import {useContext, useEffect, useState} from "react";
 import axios from "axios";
-import Swal from "sweetalert2";
-import CircularProgress from "@mui/material/CircularProgress";
 import Button from "../../components/button/button.tsx";
 import {useNavigate} from "react-router-dom";
-import ParentContext, {BackdropContext} from "../../context/orderRouteContext.ts";
+import {BackdropContext} from "../../context/orderRouteContext.ts";
 import Cookies from "js-cookie";
 
 export interface IMenu {
+    _id?:string
     image: string,
     foodName: string,
     description: string,
@@ -22,6 +20,7 @@ export interface IMenu {
     openTime: string,
     closeTime: string,
     size: string[] | null,
+    isActive: boolean,
     restaurant ? : string
 }
 function Mymenus() : JSX.Element {
@@ -42,14 +41,11 @@ function Mymenus() : JSX.Element {
         axios.get("http://localhost:8080/api/v1/menu/all", {headers: headers})
             .then(r => {
                 setData(r.data.data)
+                console.log(r.data.data)
                 updateBackdropValue(false)
             })
             .catch(e => {
-                Swal.fire({
-                    icon: "error",
-                    title: "Sorry!",
-                    text: "Something went wrong"
-                });
+                navigate("/sign-in")
                 updateBackdropValue(false)
             })
 
@@ -70,6 +66,7 @@ function Mymenus() : JSX.Element {
                 {
                     data.map((r:IMenu, i: number) => {
                         return <MenuCard
+                            _id={r._id}
                             image={r.image}
                             foodName={r.foodName}
                             description={r.description}
@@ -77,6 +74,7 @@ function Mymenus() : JSX.Element {
                             openTime={r.openTime}
                             closeTime={r.closeTime}
                             size={r.size}
+                            isActive={r.isActive}
                             handleEdite={() => navigate('/restaurant/menu-create', {state: {menu: r}})}
                         />
                     })

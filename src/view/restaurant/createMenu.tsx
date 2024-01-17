@@ -21,7 +21,8 @@ interface Menu{
     price: number,
     openTime: number,
     closeTime: number,
-    size: string[]|null
+    size: string[]|null,
+    isActive: boolean
 }
 const CreateMenu = ():JSX.Element => {
     const { backdropValue, updateBackdropValue } = useContext(BackdropContext);
@@ -106,7 +107,8 @@ const CreateMenu = ():JSX.Element => {
             price: price,
             openTime: openTime,
             closeTime: closeTime,
-            size: sizes
+            size: sizes,
+            isActive: true
         }
 
 
@@ -121,7 +123,9 @@ const CreateMenu = ():JSX.Element => {
                 navigate('/restaurant/my-menus');
             })
             .catch(e => {
+                console.log(e);
                 updateBackdropValue(false)
+
                 Swal.fire({
                     icon: "error",
                     title: "Sorry!",
@@ -148,8 +152,9 @@ const CreateMenu = ():JSX.Element => {
                 });
                 navigate('/restaurant/my-menus');
             })
-            .catch(e => {
+            .catch((e) => {
                 updateBackdropValue(false)
+                console.log(e);
                 Swal.fire({
                     icon: "error",
                     title: "Sorry!",

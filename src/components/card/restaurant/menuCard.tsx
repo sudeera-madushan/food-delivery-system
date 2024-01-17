@@ -1,6 +1,9 @@
 import ListCard from "../listcard..tsx";
 import {Switch} from "@mui/material";
-import {useState} from "react";
+import {useContext, useState} from "react";
+import {BackdropContext} from "../../../context/orderRouteContext.ts";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 /**
  * author : Sudeera Madushan
@@ -8,6 +11,7 @@ import {useState} from "react";
  * project : food-delivery-system
  */
 interface Menu {
+    _id?: string,
     image: string,
     foodName: string,
     description: string,
@@ -15,15 +19,33 @@ interface Menu {
     openTime: string,
     closeTime: string,
     size: string[] | null,
+    isActive:boolean,
     restaurant ? : string,
     handleEdite: Function
 }
 
 function  MenuCard(props:Menu):JSX.Element {
 
-    const [active, setActive] = useState(true)
+    const [active, setActive] = useState(props.isActive)
+    const { backdropValue, updateBackdropValue } = useContext(BackdropContext);
+    const ACCESS_TOKEN = Cookies.get("restaurant");
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': ACCESS_TOKEN
+    }
+
     const handleChange = (e) => {
-        setActive(e.target.checked);
+        let checked = e.target.checked;
+        updateBackdropValue(true)
+        axios.patch("http://localhost:8080/api/v1/menu/active",{_id:props._id,isActive: checked} ,{headers: headers})
+            .then(r => {
+                setActive(checked);
+                console.log(checked)
+                updateBackdropValue(false)
+            })
+            .catch(e => {
+                updateBackdropValue(false)
+            })
     }
 
 

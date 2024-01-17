@@ -1,7 +1,7 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 import {useContext, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Cookies from 'js-cookie';
 import Input from "../components/input/input.tsx";
 import Button from "../components/button/button.tsx";
@@ -37,14 +37,13 @@ const SignIn = () :JSX.Element => {
     }
 
     const singIn= () => {
-
         const headers = {'Content-Type': 'application/json'}
-
         updateBackdropValue(true)
         let restaurant:Restaurant = {
             username:username,
             password:password
         }
+
         axios.post("http://localhost:8080/api/v1/restaurant/auth", restaurant, {headers: headers})
             .then(r => {
                 Cookies.set("restaurant", r.data.data.accessToken);
@@ -70,13 +69,11 @@ const SignIn = () :JSX.Element => {
                 <div>
                     <Input placeholder={"Username"} name={"username"} type={"text"} handleEvent={handleInput}/>
                     <Input placeholder={"Password"} name={"password"} type={"password"} handleEvent={handleInput}/>
-
-
                 </div>
             </div>
             <div className={"w-full text-center "}>
                 <Button  name={"Sing In"} bgColor={"bg-blue-600"} bgColorHover={"bg-blue-800"} onClickEvent={singIn}/>
-
+                <Link to={'/sign-up'}><h1 className={"text-blue-700 cursor-pointer"}>sign up</h1></Link>
             </div>
         </section>
     )
