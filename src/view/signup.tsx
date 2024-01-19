@@ -1,7 +1,7 @@
 import Input from "./../components/input/input.tsx"
 import axios from "axios";
 import Swal from "sweetalert2";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useContext, useState} from "react";
 import { BackdropContext } from "../context/orderRouteContext.ts";
 import CustomizedDialogs from "../components/dialog/dialog.tsx";
@@ -11,12 +11,11 @@ import Button from "../components/button/button.tsx";
  * date : 1/17/2024
  * project : food-delivery-system
  */
-interface Restaurant{
-    restaurantName:string,
-    ownerNIC:string,
-    ownerFullName:string,
-    username:string,
+interface User{
+    fullName:string,
+    nic:string,
     email:string,
+    username:string,
     mobile:number,
     password:string,
     location:{ latitude: number; longitude: number } | null,
@@ -28,9 +27,8 @@ const SignUp = () :JSX.Element => {
     const [openMap, setOpenMap] = useState(false)
     const [location, setLocation] = useState<{ latitude: number; longitude: number } | null>(null)
     const { backdropValue, updateBackdropValue } = useContext(BackdropContext);
-    const [restaurantName, setRestaurantName] = useState<string>("")
-    const [ownerNIC, setOwnerNIC] = useState<string>("")
-    const [ownerFullName, setOwnerFullName] = useState<string>("")
+    const [fullName, setFullName] = useState<string>("")
+    const [nic, setNic] = useState<string>("")
     const [username, setUsername] = useState<string>("")
     const [email, setEmail] = useState<string>("")
     const [mobile, setMobile] = useState<number>(0)
@@ -47,14 +45,11 @@ const SignUp = () :JSX.Element => {
     const handleInput = (e:any, type:any) => {
         const  value = e.target.value;
         switch (type){
-            case "restaurantName":
-                setRestaurantName(value)
+            case "fullName":
+                setFullName(value)
                 break;
-            case "ownerNIC":
-                setOwnerNIC(value)
-                break;
-            case "ownerFullName":
-                setOwnerFullName(value)
+            case "nic":
+                setNic(value)
                 break;
             case "username":
                 setUsername(value)
@@ -76,10 +71,9 @@ const SignUp = () :JSX.Element => {
 
     const singUp = () => {
         updateBackdropValue(true)
-        let restaurant:Restaurant = {
-            restaurantName:restaurantName,
-            ownerNIC:ownerNIC,
-            ownerFullName:ownerFullName,
+        let user:User = {
+            fullName:fullName,
+            nic:nic,
             username:username,
             email:email,
             mobile:mobile,
@@ -87,7 +81,8 @@ const SignUp = () :JSX.Element => {
             location:location,
             address:address
         }
-        axios.post("http://localhost:8080/api/v1/restaurant/sign-up", restaurant)
+        console.log(user)
+        axios.post("http://localhost:8080/api/v1/user/sign-up", user)
             .then(r => {
                 updateBackdropValue(false)
                 Swal.fire({
@@ -114,8 +109,8 @@ const SignUp = () :JSX.Element => {
             </div>
             <div className={"flex justify-evenly mt-5"}>
                 <div>
-                    <Input placeholder={"Full Name"} name={"restaurantName"} type={"text"} handleEvent={handleInput}/>
-                    <Input placeholder={"NIC"} name={"ownerNIC"} type={"text"} handleEvent={handleInput}/>
+                    <Input placeholder={"Full Name"} name={"fullName"} type={"text"} handleEvent={handleInput}/>
+                    <Input placeholder={"NIC"} name={"nic"} type={"text"} handleEvent={handleInput}/>
                     <Input placeholder={"Username"} name={"username"} type={"text"} handleEvent={handleInput}/>
                     <Input placeholder={"Mobile"} name={"mobile"} type={"number"}  handleEvent={handleInput}/>
 
@@ -135,7 +130,7 @@ const SignUp = () :JSX.Element => {
                     <Input placeholder={"Password"} name={"password"} type={"password"} handleEvent={handleInput}/>
                     <div className={"w-full text-right "}>
                         <Button  name={"Sing Up"} bgColor={"bg-blue-600 mt-2"} bgColorHover={"bg-blue-800"} onClickEvent={singUp}/>
-
+                        <Link to={'/restaurant/sign-up'}><h1 className={"text-blue-700 cursor-pointer"}>sign up restaurant</h1></Link>
                     </div>
                 </div>
             </div>

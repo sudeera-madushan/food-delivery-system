@@ -1,68 +1,20 @@
 import { TbExchange } from "react-icons/tb";
+import {useContext, useEffect} from "react";
+import {CartContext} from "../context/orderRouteContext.ts";
+import CartItem from "../components/card/cartitem.tsx";
 function Cart():JSX.Element {
+    const {  cart} = useContext(CartContext);
+    useEffect(() => {
+        console.log(cart);
+    }, []);
     return (
         <section className={'flex justify-around'}>
             <div>
-                <div className={'w-[48vw] p-2  flex rounded-xl shadow-xl mx-5 my-2'}>
-                    <img src="./../../src/assets/french-fries.png"
-                         alt=""
-                         className={'w-24 p-2'}/>
-                    <div>
-                        <h1 className={'p-2 pb-0 font-concert-one text-2xl'}>Tomato Pamadoro</h1>
-                        <div className={'p-2 font-concert-one text-2xl flex'}>
-                            <h1 className={''}>Quantity : 10</h1>
-                            <h1 className={'ms-10'}>LKR500.00</h1>
-                        </div>
-                    </div>
-                </div>
-                <div className={'w-[48vw] p-2  flex rounded-xl shadow-xl mx-5 my-2'}>
-                    <img src="./../../src/assets/french-fries.png"
-                         alt=""
-                         className={'w-24 p-2'}/>
-                    <div>
-                        <h1 className={'p-2 pb-0 font-concert-one text-2xl'}>Tomato Pamadoro</h1>
-                        <div className={'p-2 font-concert-one text-2xl flex'}>
-                            <h1 className={''}>Quantity : 10</h1>
-                            <h1 className={'ms-10'}>LKR500.00</h1>
-                        </div>
-                    </div>
-                </div>
-                <div className={'w-[48vw] p-2  flex rounded-xl shadow-xl mx-5 my-2'}>
-                    <img src="./../../src/assets/french-fries.png"
-                         alt=""
-                         className={'w-24 p-2'}/>
-                    <div>
-                        <h1 className={'p-2 pb-0 font-concert-one text-2xl'}>Tomato Pamadoro</h1>
-                        <div className={'p-2 font-concert-one text-2xl flex'}>
-                            <h1 className={''}>Quantity : 10</h1>
-                            <h1 className={'ms-10'}>LKR500.00</h1>
-                        </div>
-                    </div>
-                </div>
-                <div className={'w-[48vw] p-2  flex rounded-xl shadow-xl mx-5 my-2'}>
-                    <img src="./../../src/assets/french-fries.png"
-                         alt=""
-                         className={'w-24 p-2'}/>
-                    <div>
-                        <h1 className={'p-2 pb-0 font-concert-one text-2xl'}>Tomato Pamadoro</h1>
-                        <div className={'p-2 font-concert-one text-2xl flex'}>
-                            <h1 className={''}>Quantity : 10</h1>
-                            <h1 className={'ms-10'}>LKR500.00</h1>
-                        </div>
-                    </div>
-                </div>
-                <div className={'w-[48vw] p-2  flex rounded-xl shadow-xl mx-5 my-2'}>
-                    <img src="./../../src/assets/french-fries.png"
-                         alt=""
-                         className={'w-24 p-2'}/>
-                    <div>
-                        <h1 className={'p-2 pb-0 font-concert-one text-2xl'}>Tomato Pamadoro</h1>
-                        <div className={'p-2 font-concert-one text-2xl flex'}>
-                            <h1 className={''}>Quantity : 10</h1>
-                            <h1 className={'ms-10'}>LKR500.00</h1>
-                        </div>
-                    </div>
-                </div>
+                {
+                    cart.map((r,i) => {
+                        return <CartItem img={r.menu.image} foodName={r.menu.foodName} qty={r.qty} price={r.menu.price}/>
+                    })
+                }
             </div>
             <div className={'w-[50vw] shadow-xl m-2'}>
                 <div className={'flex justify-between'}>

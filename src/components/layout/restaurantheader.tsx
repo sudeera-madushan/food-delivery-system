@@ -43,7 +43,8 @@ const RestaurantHeader = () => {
                     }
                 })
                 .catch(e => {
-                    navigate("sign-in")
+                    e.log
+                    // navigate("sign-in")
                 })
     }
 

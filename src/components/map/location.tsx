@@ -47,7 +47,7 @@ const MapLocation = (props:Props) => {
         const map = new window.Microsoft.Maps.Map('#myMap', {
             credentials: 'AhTs1NKD6MM19FxIHxv3kseOeji1BrzSQfcutMcPm1xxa5delVftdkNjkOQRkZ0O',
             center: new window.Microsoft.Maps.Location(props.curLocation?.latitude, props.curLocation?.longitude), // Default center (San Francisco coordinates)
-            zoom: 15,
+            zoom: 13,
         });
 
         // Add click event handler to the map

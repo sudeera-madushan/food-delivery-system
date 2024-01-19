@@ -4,7 +4,6 @@ import SearchInput from "../input/searchInput.tsx";
 import { CgMenuRightAlt , CgMenuLeftAlt } from "react-icons/cg";
 import { CiShoppingCart, CiUser } from "react-icons/ci";
 import axios from "axios";
-import Swal from "sweetalert2";
 import Cookies from "js-cookie";
 const Header = () => {
     const [isScrolled, setIsScrolled] = useState(false);

@@ -5,13 +5,13 @@ import {BackdropContext} from "../../context/orderRouteContext.ts";
 import Button from "../../components/button/button.tsx";
 import axios from "axios";
 import Swal from "sweetalert2";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 /**
  * author : Sudeera Madushan
  * date : 1/15/2024
  * project : food-delivery-system
  */
-interface Restaurant{
+export interface Restaurant{
     restaurantName:string,
     ownerNIC:string,
     ownerFullName:string,
@@ -110,7 +110,7 @@ const SignupRestaurant = () :JSX.Element => {
     return (
         <section className={"p-5 pt-1 border m-5 mt-1 rounded-xl shadow"}>
             <div>
-                <h1 className={"text-3xl font-agbalumo w-full text-center text-[var(--secondary-color)]"}>Sign Up</h1>
+                <h1 className={"text-3xl font-agbalumo w-full text-center text-[var(--secondary-color)]"}>Sign Up Restaurant</h1>
             </div>
             <div className={"flex justify-evenly mt-5"}>
                 <div>
@@ -138,7 +138,7 @@ const SignupRestaurant = () :JSX.Element => {
             </div>
             <div className={"w-full text-right "}>
                 <Button  name={"Sing Up"} bgColor={"bg-blue-600 mr-52"} bgColorHover={"bg-blue-800"} onClickEvent={singUp}/>
-
+                <Link to={'/sign-up'}><h1 className={"text-blue-700 cursor-pointer"}>sign up to order</h1></Link>
             </div>
         </section>
     )

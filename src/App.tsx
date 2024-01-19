@@ -13,7 +13,7 @@ import CreateMenu from "./view/restaurant/createMenu.tsx";
 import RestaurantHeader from "./components/layout/restaurantheader.tsx";
 import Mymenus from "./view/restaurant/mymenus.tsx";
 import {useState} from "react";
-import {BackdropContext} from "./context/orderRouteContext.ts";
+import {BackdropContext, CartContext} from "./context/orderRouteContext.ts";
 import CircularProgress from "@mui/material/CircularProgress";
 import {Backdrop} from "@mui/material";
 import SignupRestaurant from './view/restaurant/signuprestaurant.tsx';
@@ -22,14 +22,18 @@ import SignUp from './view/signup.tsx';
 function App() {
     const apikey = 'AhTs1NKD6MM19FxIHxv3kseOeji1BrzSQfcutMcPm1xxa5delVftdkNjkOQRkZ0O';
     const [backdropValue, setBackdropValue] = useState(false);
+    const [cart] = useState([]);
     const updateBackdropValue = (newValue:boolean) => {
         setBackdropValue(newValue);
     };
-
     const backdropContext = {
         updateBackdropValue,
         backdropValue,
     };
+    const cartContext = {
+       cart
+    };
+
         return (
             <>
                 <BackdropContext.Provider value={backdropContext}>
@@ -37,6 +41,7 @@ function App() {
                     <Routes>
                         <Route path={'/*'} element={
                             <>
+                        <CartContext.Provider value={cartContext}>
                                 <Header/>
                                 <Routes>
                                     <Route path={'/*'} element={<Home apikey={apikey}/>}/>
@@ -48,6 +53,7 @@ function App() {
                                     <Route path={'/sign-in/*'} element={<SignIn/>}/>
                                     <Route path={'/sign-up/*'} element={<SignUp/>}/>
                                 </Routes>
+                        </CartContext.Provider>
                             </>
                         }/>
                         <Route path={'/restaurant/*'} element={

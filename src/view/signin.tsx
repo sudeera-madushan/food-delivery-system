@@ -39,17 +39,28 @@ const SignIn = () :JSX.Element => {
     const singIn= () => {
         const headers = {'Content-Type': 'application/json'}
         updateBackdropValue(true)
-        let restaurant:Restaurant = {
+        let user = {
             username:username,
             password:password
         }
 
-        axios.post("http://localhost:8080/api/v1/restaurant/auth", restaurant, {headers: headers})
+        axios.post("http://localhost:8080/api/v1/user/sign-in", user, {headers: headers})
             .then(r => {
-                Cookies.set("restaurant", r.data.data.accessToken);
-                Cookies.set("user", JSON.stringify(r.data.data.user)); // JSON.parse("")
-                console.log(r.data.data.accessToken)
-                navigate('/restaurant/my-menus');
+
+                if (r.data.data.user){
+                    Cookies.set("user", r.data.data.accessToken);
+                    navigate('/menu-list');
+                } else if (r.data.data.restaurant){
+                    Cookies.set("restaurant", r.data.data.accessToken);
+                    navigate('/restaurant/my-menus');
+                }
+
+
+                // Cookies.set("user", JSON.stringify(r.data.data.user)); // JSON.parse("")
+                // console.log(r.data.data.accessToken)
+                // navigate('/restaurant/my-menus');
+
+                updateBackdropValue(false)
             })
             .catch(e => {
                 updateBackdropValue(false)
@@ -63,7 +74,7 @@ const SignIn = () :JSX.Element => {
     return (
         <section className={"p-20 pt-10 border m-96 mt-20 rounded-xl shadow"}>
             <div>
-                <h1 className={"text-3xl font-agbalumo w-full text-center text-[var(--secondary-color)]"}>Sign Up</h1>
+                <h1 className={"text-3xl font-agbalumo w-full text-center text-[var(--secondary-color)]"}>Sign In</h1>
             </div>
             <div className={"flex justify-evenly mt-5"}>
                 <div>

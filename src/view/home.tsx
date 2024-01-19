@@ -29,7 +29,7 @@ export function Home(props: Props) {
                 <h1 className={'font-concert-one mt-24 ml-10 text-7xl text-[var(--primary-color)] max-[856px]:w-36 max-[856px]:mt-2  '}>Swift, Savor, Repeat!</h1>
             <div className={'w-full h-[500px] px-20 mt-20 mb-32  max-[856px]:px-10'}>
 
-                <HomeMap key={props.apikey} />
+                {/*<HomeMap key={props.apikey} />*/}
                 {/*<MapLocation key={props.apikey}/>*/}
             </div>
         </section>

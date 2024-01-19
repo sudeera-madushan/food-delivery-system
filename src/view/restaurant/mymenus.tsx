@@ -24,7 +24,7 @@ export interface IMenu {
     restaurant ? : string
 }
 function Mymenus() : JSX.Element {
-    const { backdropValue, updateBackdropValue } = useContext(BackdropContext);
+    const {  updateBackdropValue } = useContext(BackdropContext);
     const [data, setData] = useState<IMenu[]>([]);
     const navigate = useNavigate();
 
@@ -38,20 +38,19 @@ function Mymenus() : JSX.Element {
         'Authorization': ACCESS_TOKEN
     }
     const getMyMenus = () => {
-        axios.get("http://localhost:8080/api/v1/menu/all", {headers: headers})
+        axios.get("http://localhost:8080/api/v1/menu/my-menus", {headers: headers})
             .then(r => {
                 setData(r.data.data)
-                console.log(r.data.data)
                 updateBackdropValue(false)
             })
-            .catch(e => {
+            .catch(() => {
                 navigate("/sign-in")
                 updateBackdropValue(false)
             })
 
     }
 
-    const openCreateMenu = (e) => {
+    const openCreateMenu = () => {
         updateBackdropValue(true)
         navigate("/restaurant/menu-create")
     }
@@ -64,7 +63,7 @@ function Mymenus() : JSX.Element {
                     <Button  name={"Create"} onClickEvent={openCreateMenu} bgColor={"bg-emerald-600"} bgColorHover={"bg-emerald-800"}/>
                 </div>
                 {
-                    data.map((r:IMenu, i: number) => {
+                    data.map((r:IMenu) => {
                         return <MenuCard
                             _id={r._id}
                             image={r.image}

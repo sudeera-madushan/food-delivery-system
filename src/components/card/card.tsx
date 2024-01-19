@@ -1,27 +1,18 @@
 import {FaRegStar, FaStar} from "react-icons/fa";
-import {Link} from "react-router-dom";
-import axios from "axios";
+import {MouseEventHandler} from "react";
 interface Props{
     img:string,
     title:string,
     content:string,
     price:number,
-    rate:number
+    rate:number,
+    handleEvent:MouseEventHandler<HTMLDivElement>
 }
 function Card(props:Props):JSX.Element {
-    function testReq() {
-        axios.get("http://localhost:8080/api/v1/menu/all")
-            .then(r => {
-                console.log(r);
-            })
-            .catch(e => {
-                console.log(e);
-            })
-    }
     return (
-            <div className={'flex-shrink-0 shadow-lg m-3 mt-1 rounded-xl w-72 bg-white'} onClick={testReq}>
-            <Link to={'/menu-create'}>
-                <div className={'m-2 flex h-0 justify-end'}>
+            <div className={'flex-shrink-0 shadow-lg m-3 mt-1 rounded-xl w-72 bg-white'} onClick={props.handleEvent}>
+            {/*<Link to={'/menu-create'}>*/}
+                <div className={'m-2 flex h-0 justify-end'} >
                     {props.rate>0 ?  <FaStar className={'text-yellow-500'}/> : <FaRegStar />}
                     {props.rate>1 ?  <FaStar className={'text-yellow-500'}/> : <FaRegStar />}
                     {props.rate>2 ?  <FaStar className={'text-yellow-500'}/> : <FaRegStar />}
@@ -36,7 +27,7 @@ function Card(props:Props):JSX.Element {
                     <h1 className={'font-bold max-h-5 text-right'}>LKR{props.price}</h1>
                 </div>
                 <p className={' px-[8px] text-[11px]  leading-[12px] mt-1 mb-2 text-justify font-semibold text-gray-500'}>{props.content}</p>
-        </Link>
+        {/*</Link>*/}
             </div>
     )
 }
