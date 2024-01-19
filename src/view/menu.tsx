@@ -1,17 +1,36 @@
 import {useContext, useEffect, useState} from "react";
 import Card from "../components/card/card.tsx";
 import {useLocation} from "react-router-dom";
-import { CartContext} from "../context/orderRouteContext.ts";
-import Item from "./../context/orderRouteContext.ts"
+import {BackdropContext, CartContext} from "../context/orderRouteContext.ts";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 function Menu():JSX.Element {
     const [count, setCount] = useState<number>(1);
     const [disabled, setDisabled] = useState<boolean>(false);
-    const {  cart} = useContext(CartContext);
+    const {cart} = useContext(CartContext);
     const location = useLocation();
+    const [data, setData] = useState<Menu[]>([])
+    const { updateBackdropValue } = useContext(BackdropContext);
     const menu = location?.state ?.menu;
-
+    const ACCESS_TOKEN = Cookies.get("user");
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': ACCESS_TOKEN
+    }
+    const getOtherMenu = () => {
+        axios.get("http://localhost:8080/api/v1/menu/all", {headers: headers})
+            .then(r => {
+                setData(r.data.data)
+                updateBackdropValue(false)
+            })
+            .catch(e => {
+                console.log(e)
+                updateBackdropValue(false)
+            })
+    };
     useEffect(() => {
+        getOtherMenu()
         cart.map((r,i)=>{
             if (r.menu._id === menu._id){
                 setDisabled(true)

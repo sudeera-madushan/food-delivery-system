@@ -18,7 +18,7 @@ export interface Menu{
 }
 
 function MenuList(): JSX.Element {
-    const [data, setData] = useState<Menu[]>([])
+    const [data, setData] = useState([])
     const navigate = useNavigate()
     const { updateBackdropValue } = useContext(BackdropContext);
     const ACCESS_TOKEN = Cookies.get("user");

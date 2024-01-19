@@ -15,7 +15,7 @@ const CartItem = (props:Props) :JSX.Element => {
         <div className={'w-[48vw] p-2  flex rounded-xl shadow-xl mx-5 my-2'}>
             <img src={props.img}
                  alt=""
-                 className={'w-24 p-2'}/>
+                 className={'w-24 p-2 rounded-xl'}/>
             <div>
                 <h1 className={'p-2 pb-0 font-concert-one text-2xl'}>{props.foodName}</h1>
                 <div className={'p-2 font-concert-one text-2xl flex'}>
