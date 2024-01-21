@@ -1,9 +1,10 @@
 import {useContext, useEffect, useState} from "react";
 import Card from "../components/card/card.tsx";
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {BackdropContext, CartContext} from "../context/orderRouteContext.ts";
 import Cookies from "js-cookie";
 import axios from "axios";
+import {IMenu} from "./menuList.tsx"
 
 function Menu():JSX.Element {
     const [count, setCount] = useState<number>(1);
@@ -12,6 +13,7 @@ function Menu():JSX.Element {
     const location = useLocation();
     const [data, setData] = useState<Menu[]>([])
     const { updateBackdropValue } = useContext(BackdropContext);
+    const navigate = useNavigate();
     const menu = location?.state ?.menu;
     const ACCESS_TOKEN = Cookies.get("user");
     const headers = {
@@ -21,7 +23,14 @@ function Menu():JSX.Element {
     const getOtherMenu = () => {
         axios.get("http://localhost:8080/api/v1/menu/all", {headers: headers})
             .then(r => {
-                setData(r.data.data)
+                let x = r.data.data;
+                for (let i = 0; i < x.length; i++) {
+                    console.log(r);
+                    if (menu._id === x[i]._id){
+                        data.push(x[i])
+                    }
+                }
+
                 updateBackdropValue(false)
             })
             .catch(e => {
@@ -30,6 +39,7 @@ function Menu():JSX.Element {
             })
     };
     useEffect(() => {
+
         getOtherMenu()
         cart.map((r,i)=>{
             if (r.menu._id === menu._id){
@@ -60,6 +70,19 @@ function Menu():JSX.Element {
         cart.push(data)
         console.log(cart)
     };
+
+    const selectMenu = (m:IMenu) => {
+        updateBackdropValue(true)
+        setData([])
+        location.state.menu = m;
+        // navigate('/menu', {state: {menu: m}})
+        setTimeout(() => {
+            getOtherMenu()
+        },1000)
+
+    }
+
+
     return (
         <section className={'p-10'}>
             <div className={'w-[50vw] flex'}>
@@ -89,13 +112,18 @@ function Menu():JSX.Element {
                 </div>
             </div>
             <div className={'grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 w-fit relative m-auto my-10'}>
-                <Card img={'./../../src/assets/home/pngwing.com.png'} title={'French Rise'} price={500.00} rate={3} content={'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias animi aspernatur beatae consequatur debitis distinctio dolor enim iste minus'}/>
-                <Card img={'./../../src/assets/home/pngwing.com.png'} title={'French Rise'} price={500.00} rate={3} content={'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias animi aspernatur beatae consequatur debitis distinctio dolor enim iste minus'}/>
-                <Card img={'./../../src/assets/home/pngwing.com.png'} title={'French Rise'} price={500.00} rate={3} content={'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias animi aspernatur beatae consequatur debitis distinctio dolor enim iste minus'}/>
-                <Card img={'./../../src/assets/home/pngwing.com.png'} title={'French Rise'} price={500.00} rate={3} content={'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias animi aspernatur beatae consequatur debitis distinctio dolor enim iste minus'}/>
-                <Card img={'./../../src/assets/home/pngwing.com.png'} title={'French Rise'} price={500.00} rate={3} content={'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias animi aspernatur beatae consequatur debitis distinctio dolor enim iste minus'}/>
-                <Card img={'./../../src/assets/home/pngwing.com.png'} title={'French Rise'} price={500.00} rate={3} content={'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias animi aspernatur beatae consequatur debitis distinctio dolor enim iste minus'}/>
-                <Card img={'./../../src/assets/home/pngwing.com.png'} title={'French Rise'} price={500.00} rate={3} content={'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias animi aspernatur beatae consequatur debitis distinctio dolor enim iste minus'}/>
+                {
+                    data.map((r:IMenu) => {
+                        return <Card
+                            img={r.image}
+                            title={r.foodName}
+                            price={r.price}
+                            rate={3}
+                            content={r.description}
+                            handleEvent={() => selectMenu(r)}
+                        />
+                    })
+                }
             </div>
         </section>
     )

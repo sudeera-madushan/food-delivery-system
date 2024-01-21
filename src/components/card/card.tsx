@@ -1,5 +1,5 @@
 import {FaRegStar, FaStar} from "react-icons/fa";
-import {MouseEventHandler} from "react";
+import {MouseEventHandler, useEffect} from "react";
 interface Props{
     img:string,
     title:string,
@@ -9,6 +9,8 @@ interface Props{
     handleEvent:MouseEventHandler<HTMLDivElement>
 }
 function Card(props:Props):JSX.Element {
+
+
     return (
             <div className={'flex-shrink-0 shadow-lg m-3 mt-1 rounded-xl w-72 bg-white cursor-pointer'} onClick={props.handleEvent}>
             {/*<Link to={'/menu-create'}>*/}

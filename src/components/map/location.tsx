@@ -25,6 +25,7 @@ const MapLocation = (props:Props) => {
                 const address = location.address.formattedAddress;
                 const zipcode = location.address.postalCode;
                 if (location.address.addressLine){
+                    console.log(latitude,longitude)
                     props.getLocation({ latitude: latitude, longitude: longitude }
                         ,address
                         ,zipcode)
@@ -43,7 +44,6 @@ const MapLocation = (props:Props) => {
 
     useEffect(() => {
         // Initialize Bing Maps
-        console.log(props.curLocation)
         const map = new window.Microsoft.Maps.Map('#myMap', {
             credentials: 'AhTs1NKD6MM19FxIHxv3kseOeji1BrzSQfcutMcPm1xxa5delVftdkNjkOQRkZ0O',
             center: new window.Microsoft.Maps.Location(props.curLocation?.latitude, props.curLocation?.longitude), // Default center (San Francisco coordinates)

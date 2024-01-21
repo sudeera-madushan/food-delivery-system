@@ -5,7 +5,7 @@ import {BackdropContext} from "../context/orderRouteContext.ts";
 import Cookies from "js-cookie";
 import {useNavigate} from "react-router-dom";
 
-export interface Menu{
+export interface IMenu{
     image: string,
     foodName: string,
     description: string,
@@ -35,6 +35,7 @@ function MenuList(): JSX.Element {
         axios.get("http://localhost:8080/api/v1/menu/all", {headers: headers})
             .then(r => {
                 setData(r.data.data)
+                console.log(r.data.data)
                 updateBackdropValue(false)
             })
             .catch(e => {
@@ -50,7 +51,7 @@ function MenuList(): JSX.Element {
             <section className={'grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 w-fit relative m-auto my-10' }>
 
                 {
-                    data.map((r:Menu) => {
+                    data.map((r:IMenu) => {
                         return <Card
                             img={r.image}
                             title={r.foodName}
