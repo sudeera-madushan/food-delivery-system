@@ -83,6 +83,7 @@ const Header = () => {
                         <Link to={'/'} className={''}><li className={'max-[856px]:hover:rounded max-[856px]:mr-[5px]'}>Home</li></Link>
                         <Link to={'/menu-list'}><li className={'max-[856px]:hover:rounded max-[856px]:mr-[5px]'}>Menu</li></Link>
                         <Link to={'/restaurant-list'}><li className={'max-[856px]:hover:rounded max-[856px]:mr-[5px]'}>Restaurant</li></Link>
+                        <Link to={'/orders'}><li className={'max-[856px]:hover:rounded max-[856px]:mr-[5px]'}>Orders</li></Link>
                         <Link to={'/cart'}><li className={'max-[856px]:hover:rounded max-[856px]:mr-[5px]'}><CiShoppingCart className={'text-2xl'}/></li></Link>
                         {
                             loged ?

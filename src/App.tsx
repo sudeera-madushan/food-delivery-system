@@ -19,6 +19,7 @@ import {Backdrop} from "@mui/material";
 import SignupRestaurant from './view/restaurant/signuprestaurant.tsx';
 import SignIn from "./view/signin.tsx";
 import SignUp from './view/signup.tsx';
+import Orders from "./view/orders.tsx";
 
 
 function App() {
@@ -54,6 +55,7 @@ function App() {
                                     <Route path={'/route/*'} element={<OrderRoute/>}/>
                                     <Route path={'/sign-in/*'} element={<SignIn/>}/>
                                     <Route path={'/sign-up/*'} element={<SignUp/>}/>
+                                    <Route path={'/orders/*'} element={<Orders/>}/>
                                 </Routes>
                         </CartContext.Provider>
                             </>
