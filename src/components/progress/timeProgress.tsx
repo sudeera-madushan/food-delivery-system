@@ -43,7 +43,6 @@ export default function TimeProgress(props:Props) {
 
     React.useEffect(() => {
         const timer = setInterval(() => {
-            console.log(progress)
             setProgress((prevProgress) =>
                 prevProgress === 0 ? 0 : prevProgress - 1
             );

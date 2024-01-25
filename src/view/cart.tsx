@@ -5,6 +5,7 @@ import CustomizedDialogs from "./../../src/components/dialog/dialog.tsx";
 import axios from "axios";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
+import Empty from "../components/dialog/empty.tsx";
 function Cart():JSX.Element {
     const {cart} = useContext(CartContext);
     const { updateBackdropValue } = useContext(BackdropContext);
@@ -109,7 +110,8 @@ function Cart():JSX.Element {
             totalCost:totalCost,
             deliveryCost:deliveryCost,
             taxCost: taxCost,
-            toPayCost: toPayCost
+            toPayCost: toPayCost,
+            ordered: Date.now()
         }
         axios.post("http://localhost:8080/api/v1/order/save", data,{headers: headers})
             .then((r:any) => {
@@ -133,14 +135,17 @@ function Cart():JSX.Element {
 
     return (
         <section className={'flex justify-around'}>
-            <div>
-                {
-                    cart.map((r:any) => {
-                        return <CartItem img={r.menu.image} foodName={r.menu.foodName} qty={r.qty} price={r.menu.price}/>
-                    })
-                }
-            </div>
-            <div className={'w-[50vw] shadow-xl m-2'}>
+            {
+                cart.length > 0 ?
+                    <>
+                        <div>
+                            {
+                                cart.map((r:any) => {
+                                    return <CartItem img={r.menu.image} foodName={r.menu.foodName} qty={r.qty} price={r.menu.price}/>
+                                })
+                            }
+                        </div>
+                        <div className={'w-[50vw] shadow-xl m-2'}>
                 <div className={'flex justify-between'}>
                     <h1 className={'m-5 mb-1 font-agbalumo text-xl'}>Address :</h1>
                     <CustomizedDialogs open={openMap} getLocation={getLocation}/>
@@ -170,6 +175,9 @@ function Cart():JSX.Element {
                 </div>
 
             </div>
+                    </> :
+                    <Empty/>
+            }
         </section>
     )
 }

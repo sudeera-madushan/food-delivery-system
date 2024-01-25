@@ -1,7 +1,13 @@
 import Button from "../../components/button/button.tsx";
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import { IoCloseCircleSharp } from "react-icons/io5";
+import {BackdropContext} from "../../context/orderRouteContext.ts";
+import Cookies from "js-cookie";
+import {useNavigate} from "react-router-dom";
+import axios from "axios";
+import OrderCart from "../../components/card/ordercart.tsx";
+import ResOrderCart from "../../components/card/restaurant/resordercart.tsx";
 
 /**
  * author : Sudeera Madushan
@@ -9,116 +15,99 @@ import { IoCloseCircleSharp } from "react-icons/io5";
  * project : food-delivery-system
  */
 const Orders = (() :JSX.Element =>{
-    const [orderedTime, setOrderedTime] = useState(new Date)
-    const [time, setTime] = useState(0)
-    const [mins, setMins] = useState(30)
-
-    const calculateTimeDifference = (orderedTime:Date) => {
-        const thirtyMinutesEarlier = new Date(new Date().getTime() - 30 * 60 * 1000);
-        const differenceInMinutes = (orderedTime.getTime() - thirtyMinutesEarlier.getTime()) / (60 * 1000);
-
-        return differenceInMinutes;
-    };
-
+    const { updateBackdropValue } = useContext(BackdropContext);
+    const [orders, setOrders] = useState([])
+    const navigate = useNavigate();
+    const ACCESS_TOKEN = Cookies.get("restaurant");
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': ACCESS_TOKEN
+    }
     useEffect(() => {
-        orderedTime.setHours(18)
-        orderedTime.setMinutes(10);
-        orderedTime.setSeconds(30)
-        setTime( calculateTimeDifference(orderedTime));
+        updateBackdropValue(true);
+        getAllMyOrders();
     }, []);
 
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setTime((prevProgress) =>
-                prevProgress === 0 ? 0 : prevProgress - (1/600)
-            );
-        }, 100);
+    const getAllMyOrders = () => {
+        setOrders([]);
+        updateBackdropValue(true);
+        axios.get("http://localhost:8080/api/v1/order/my-all", {headers: headers})
+            .then((r:any) => {
+                setOrders(r.data.data);
+                console.log(r.data.data)
+                updateBackdropValue(false)
+            })
+            .catch((e:any) => {
+                console.log(e);
+                updateBackdropValue(false)
+            })
+    };
 
-        if (time <= 0) {
-            clearInterval(timer);
-        }
+    const conformOrder = (id:string) => {
 
-        return () => {
-            clearInterval(timer);
-        };
-    }, [time]);
+        updateBackdropValue(true)
+        axios.post("http://localhost:8080/api/v1/order/conform", {_id:id}, {headers: headers})
+            .then((r:any) => {
+                getAllMyOrders();
+                updateBackdropValue(false)
+            })
+            .catch((e:any) => {
+                console.log(e);
+                updateBackdropValue(false)
+            });
+    }
+    const cookedOrder = (id:string) => {
 
+        updateBackdropValue(true)
+        axios.post("http://localhost:8080/api/v1/order/cooked", {_id:id}, {headers: headers})
+            .then((r:any) => {
+                getAllMyOrders();
+                updateBackdropValue(false)
+            })
+            .catch((e:any) => {
+                console.log(e);
+                updateBackdropValue(false)
+            });
+    }
+
+    const completeOrder = (id:string) => {
+        console.log(
+            1111
+        )
+        updateBackdropValue(true)
+        axios.post("http://localhost:8080/api/v1/order/complete", {_id:id}, {headers: headers})
+            .then((r:any) => {
+                getAllMyOrders();
+                updateBackdropValue(false)
+            })
+            .catch((e:any) => {
+                console.log(e);
+                updateBackdropValue(false)
+            });
+    }
   return (
       <section className={"p-20 pt-10 border m-56 mt-1 rounded-xl shadow"}>
           <div>
               <h1 className={"text-3xl font-agbalumo w-full text-center text-[var(--secondary-color)]"}>Orders</h1>
           </div>
           <div className={"mt-5"}>
-              <div className={"border-b-cyan-600 border  p-3 pl-7 rounded-2xl shadow-xl mb-5"}>
-                  <div className={"flex justify-between "}>
-                    <div></div>
-                    <h1 className={"text-[var(--primary-color)] ms-2 font-concert-one text-xl "}>Fish Curry and Mixed Rice</h1>
-                    <div className={"justify-end mr-2"}>
-                        {time <= 0 ? <IoCloseCircleSharp className={"text-red-600 text-5xl"}/> : <CircularProgress variant="determinate" value={(time/mins)*100} />}
-                    </div>
-                  </div>
-                  <div className={"flex"}>
-                    <h1 className={"font-bold font-agbalumo text-gray-600"}>Address :</h1>
-                    <h1 className={"text-blue-700 ms-2 font-concert-one"}>Fish Curry and Mixed Rice</h1>
-                  </div>
-                  <div className={"flex"}>
-                    <h1 className={"font-bold font-agbalumo text-gray-600"}>Price :</h1>
-                    <h1 className={"text-blue-700 ms-2 font-concert-one"}>2000LKR</h1>
-                  </div>
-                  <div className={"flex"}>
-                    <h1 className={"font-bold font-agbalumo text-gray-600"}>Distance :</h1>
-                    <h1 className={"text-blue-700 ms-2 font-concert-one"}>10KM</h1>
-                  </div>
-                  <div className={"flex"}>
-                    <h1 className={"font-bold font-agbalumo text-gray-600"}>Delivery Charge :</h1>
-                    <h1 className={"text-blue-700 ms-2 font-concert-one"}>100LKR</h1>
-                      {
-                          time > 0 ? <div className={"text-right w-2/3 h-2"}>
-                          <Button name={"Conform"} bgColor={"bg-green-500"} bgColorHover={"bg-green-900"}/>
-                          <Button name={"Cancel"} bgColor={"bg-gray-400"} bgColorHover={"bg-green-900"}/>
-                      </div> : null
-                      }
-                  </div>
-                  <div className={"flex"}>
-                      <h1 className={"font-bold font-agbalumo text-gray-600"}>Ordered Time :</h1>
-                      <h1 className={"text-blue-700 ms-2 font-concert-one"}>{`${orderedTime.getHours()}:${orderedTime.getMinutes()}`}</h1>
-                  </div>
-              </div>
-              <div className={"border-b-cyan-600 border  p-3 pl-7 rounded-2xl shadow-xl mb-5"}>
-                  <div className={"flex justify-between "}>
-                    <div></div>
-                    <h1 className={"text-[var(--primary-color)] ms-2 font-concert-one text-xl "}>Fish Curry and Mixed Rice</h1>
-                    <div className={"justify-end mr-2"}>
-                        {time <= 0 ? <IoCloseCircleSharp className={"text-red-600 text-5xl"}/> : <CircularProgress variant="determinate" value={(time/mins)*100} />}
-                    </div>
-                  </div>
-                  <div className={"flex"}>
-                    <h1 className={"font-bold font-agbalumo text-gray-600"}>Address :</h1>
-                    <h1 className={"text-blue-700 ms-2 font-concert-one"}>Fish Curry and Mixed Rice</h1>
-                  </div>
-                  <div className={"flex"}>
-                    <h1 className={"font-bold font-agbalumo text-gray-600"}>Price :</h1>
-                    <h1 className={"text-blue-700 ms-2 font-concert-one"}>2000LKR</h1>
-                  </div>
-                  <div className={"flex"}>
-                    <h1 className={"font-bold font-agbalumo text-gray-600"}>Distance :</h1>
-                    <h1 className={"text-blue-700 ms-2 font-concert-one"}>10KM</h1>
-                  </div>
-                  <div className={"flex"}>
-                    <h1 className={"font-bold font-agbalumo text-gray-600"}>Delivery Charge :</h1>
-                    <h1 className={"text-blue-700 ms-2 font-concert-one"}>100LKR</h1>
-                      {
-                          time > 0 ? <div className={"text-right w-2/3 h-2"}>
-                          <Button name={"Conform"} bgColor={"bg-green-500"} bgColorHover={"bg-green-900"}/>
-                          <Button name={"Cancel"} bgColor={"bg-gray-400"} bgColorHover={"bg-green-900"}/>
-                      </div> : null
-                      }
-                  </div>
-                  <div className={"flex"}>
-                      <h1 className={"font-bold font-agbalumo text-gray-600"}>Ordered Time :</h1>
-                      <h1 className={"text-blue-700 ms-2 font-concert-one"}>{`${orderedTime.getHours()}:${orderedTime.getMinutes()}`}</h1>
-                  </div>
-              </div>
+              {
+                  orders.map((v) => {
+                      return <ResOrderCart
+                          _id={v._id}
+                          foodName={v.cart[0].menu.foodName}
+                          address={v.address}
+                          price={v.price}
+                          Distance={v.distance}
+                          states={v.states}
+                          ordered={v.ordered as Date}
+                          onClick={() => navigate('/route', {state:{order:v}})}
+                          conformOrder={conformOrder}
+                          cookedOrder={cookedOrder}
+                          completeOrder={completeOrder}
+                      />;
+                  })
+              }
           </div>
       </section>
   )

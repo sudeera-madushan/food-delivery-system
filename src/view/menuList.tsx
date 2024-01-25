@@ -4,6 +4,7 @@ import axios from "axios";
 import {BackdropContext} from "../context/orderRouteContext.ts";
 import Cookies from "js-cookie";
 import {useNavigate} from "react-router-dom";
+import Empty from "../components/dialog/empty.tsx";
 
 export interface IMenu{
     image: string,
@@ -47,7 +48,8 @@ function MenuList(): JSX.Element {
 
 
     return (
-        <section>
+        <section className={"flex justify-around"}>
+            {data.length > 0 ?
             <section className={'grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 w-fit relative m-auto my-10' }>
 
                 {
@@ -63,7 +65,8 @@ function MenuList(): JSX.Element {
                     })
                 }
 
-            </section>
+            </section> : <Empty/>
+            }
         </section>
     )
 }

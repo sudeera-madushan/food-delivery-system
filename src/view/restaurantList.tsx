@@ -6,6 +6,7 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import {Restaurant} from "./restaurant/signuprestaurant.tsx";
 import {Menu} from "./menuList.tsx";
+import Empty from "../components/dialog/empty.tsx";
 function RestaurantList() : JSX.Element {
     const {  updateBackdropValue } = useContext(BackdropContext);
     const [data, setData] = useState([])
@@ -31,7 +32,8 @@ function RestaurantList() : JSX.Element {
             })
     }
     return (
-        <section>
+        <section className={"flex justify-around"}>
+            { data.length > 0 ?
             <section className={'flex flex-col gap-5 items-center justify-center my-10'}>
 
                 {
@@ -39,7 +41,7 @@ function RestaurantList() : JSX.Element {
                         return   <RestaurantCard name={value.restaurant.restaurantName} rate={4} address={value.restaurant.address} cards={value.menus}/>
                     })
                 }
-            </section>
+            </section> : <Empty/>}
         </section>
     );
 }

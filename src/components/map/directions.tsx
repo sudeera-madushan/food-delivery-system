@@ -1,7 +1,11 @@
 import {useContext, useEffect} from 'react';
 import ParentContext from "../../context/orderRouteContext.ts";
-const BingMapComponent = () => {
-    const { parentValue, updateParentValue } = useContext(ParentContext);
+interface Props{
+    from:string,
+    to:string
+}
+const BingMapComponent = (props:Props) => {
+    const {  updateParentValue } = useContext(ParentContext);
 
     const handleButtonClick = (time:number) => {
         // Call the function from the context to update the parent's value
@@ -11,8 +15,8 @@ const BingMapComponent = () => {
 
 
     useEffect(() => {
-        let map;
-        let directionsManager;
+        let map:any;
+        let directionsManager:any;
         //
         // const updateTime = (time:number) => {
         //     // Call the function from the context to update the parent's value
@@ -24,13 +28,13 @@ const BingMapComponent = () => {
             window.Microsoft.Maps.loadModule('Microsoft.Maps.Directions', () => {
                 directionsManager = new window.Microsoft.Maps.Directions.DirectionsManager(map);
 
-                const seattleWaypoint = new window.Microsoft.Maps.Directions.Waypoint({ address: 'Reswehera, Sri Lanka' });
+                const seattleWaypoint = new window.Microsoft.Maps.Directions.Waypoint({ address: props.to });
                 directionsManager.addWaypoint(seattleWaypoint);
 
-                const workWaypoint = new window.Microsoft.Maps.Directions.Waypoint({ address: 'Colombo, Sri Lanka' });
+                const workWaypoint = new window.Microsoft.Maps.Directions.Waypoint({ address: props.from });
                 directionsManager.addWaypoint(workWaypoint);
-                const workWaypoint1 = new window.Microsoft.Maps.Directions.Waypoint({ address: 'Panadura, Sri Lanka' });
-                directionsManager.addWaypoint(workWaypoint1);
+                // const workWaypoint1 = new window.Microsoft.Maps.Directions.Waypoint({ address: 'Panadura, Sri Lanka' });
+                // directionsManager.addWaypoint(workWaypoint1);
 
                 window.Microsoft.Maps.Events.addHandler(directionsManager, 'directionsError', directionsError);
                 window.Microsoft.Maps.Events.addHandler(directionsManager, 'directionsUpdated', directionsUpdated);
