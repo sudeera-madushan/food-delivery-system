@@ -4,7 +4,10 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {BackdropContext, CartContext} from "../context/orderRouteContext.ts";
 import Cookies from "js-cookie";
 import axios from "axios";
-import {IMenu} from "./menuList.tsx"
+import {IMenu} from "./menuList.tsx";
+import Button from '@mui/material/Button';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 function Menu():JSX.Element {
     const [count, setCount] = useState<number>(1);
@@ -20,6 +23,7 @@ function Menu():JSX.Element {
         'Content-Type': 'application/json',
         'Authorization': ACCESS_TOKEN
     }
+    const [open, setOpen] = useState(false);
     const getOtherMenu = () => {
         axios.get("http://localhost:8080/api/v1/menu/all", {headers: headers})
             .then(r => {
@@ -66,11 +70,17 @@ function Menu():JSX.Element {
             price:10
 
         }
-        // cart.splice(data,1)
+        handleClick()
         cart.push(data)
         console.log(cart)
     };
+    const handleClick = () => {
+        setOpen(true);
+    };
 
+    const handleClose = () => {
+        setOpen(false);
+    };
     const selectMenu = (m:IMenu) => {
         updateBackdropValue(true)
         setData([])
@@ -124,6 +134,18 @@ function Menu():JSX.Element {
                         />
                     })
                 }
+            </div>
+            <div>
+                <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical:'bottom',horizontal: 'right' }}>
+                    <Alert
+                        onClose={handleClose}
+                        severity="success"
+                        variant="filled"
+                        sx={{ width: '100%' }}
+                    >
+                        Menu add to cart success !
+                    </Alert>
+                </Snackbar>
             </div>
         </section>
     )

@@ -6,6 +6,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 import Empty from "../components/dialog/empty.tsx";
+import PaymentForm from "../components/checkout/PayementForm.tsx";
 function Cart():JSX.Element {
     const {cart} = useContext(CartContext);
     const { updateBackdropValue } = useContext(BackdropContext);
@@ -151,7 +152,7 @@ function Cart():JSX.Element {
                     <CustomizedDialogs open={openMap} getLocation={getLocation}/>
                 </div>
                 <h1 className={'m-5 mt-0 font-agbalumo text-2xl p-2 rounded-xl shadow'}>{myAddress}</h1>
-
+                <PaymentForm />
                 <div className={'p-10 px-20'}>
                     <div className={'flex justify-between pt-10 py-1 border-b'}>
                         <h1 className={''}>Total </h1>

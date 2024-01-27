@@ -38,6 +38,10 @@ function App() {
        cart
     };
 
+
+
+
+
         return (
             <>
                 <BackdropContext.Provider value={backdropContext}>

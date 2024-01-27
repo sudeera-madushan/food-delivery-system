@@ -6,6 +6,9 @@ import {useContext, useState} from "react";
 import { BackdropContext } from "../context/orderRouteContext.ts";
 import CustomizedDialogs from "../components/dialog/dialog.tsx";
 import Button from "../components/button/button.tsx";
+import {getAuth, GoogleAuthProvider, signInWithPopup} from "firebase/auth";
+import {app} from "../firebase/firebase.ts";
+
 /**
  * author : Sudeera Madushan
  * date : 1/17/2024
@@ -21,6 +24,8 @@ interface User{
     location:{ latitude: number; longitude: number } | null,
     address:string
 }
+
+
 const SignUp = () :JSX.Element => {
 
     const navigate = useNavigate();
@@ -102,6 +107,29 @@ const SignUp = () :JSX.Element => {
                 });
             })
     }
+
+
+    // const googleSignUp = ()
+    const googleSingUp = async () => {
+        try {
+            const provider = new GoogleAuthProvider();
+            const auth = getAuth(app);
+            const result = await signInWithPopup(auth, provider);
+            // const formData = {
+            //     email: result.user.email
+            // }
+            // const userId = await signWithGoogle(formData);
+            // if (type === 'COMPANY') {
+            //     navigate('company', {state: {id: userId}})
+            // } else if (type === 'JOB_SEEKER') {
+            //     navigate('job-seeker', {state: {id: userId}})
+            // }
+            console.log(result)
+        } catch (er) {
+            console.log("couldn't sign in google", er);
+        }
+    }
+
     return (
         <section className={"p-5 pt-1 border m-5 mt-1 rounded-xl shadow mx-56"}>
             <div>
@@ -133,6 +161,7 @@ const SignUp = () :JSX.Element => {
                         <Link to={'/restaurant/sign-up'}><h1 className={"text-blue-700 cursor-pointer"}>sign up restaurant</h1></Link>
                     </div>
                 </div>
+                <button onClick={googleSingUp}>google</button>
             </div>
         </section>
     )
