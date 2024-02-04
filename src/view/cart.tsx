@@ -7,8 +7,10 @@ import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 import Empty from "../components/dialog/empty.tsx";
 import PaymentForm from "../components/checkout/PayementForm.tsx";
+import {useNavigate} from "react-router-dom";
 function Cart():JSX.Element {
     const {cart} = useContext(CartContext);
+    const navigate = useNavigate();
     const { updateBackdropValue } = useContext(BackdropContext);
     const [openMap, setOpenMap] = useState(false)
     const [myAddress, setMyAddress] = useState("")
@@ -121,6 +123,7 @@ function Cart():JSX.Element {
                     title: "Success!",
                     text: "Order Added successfully!"
                 });
+                navigate('/my-orders');
                 updateBackdropValue(false)
             })
             .catch((e:any) => {

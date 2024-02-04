@@ -8,6 +8,9 @@ import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import OrderCart from "../../components/card/ordercart.tsx";
 import ResOrderCart from "../../components/card/restaurant/resordercart.tsx";
+import {socket} from "../../App.tsx";
+import Alert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
 
 /**
  * author : Sudeera Madushan
@@ -16,8 +19,9 @@ import ResOrderCart from "../../components/card/restaurant/resordercart.tsx";
  */
 const Orders = (() :JSX.Element =>{
     const { updateBackdropValue } = useContext(BackdropContext);
-    const [orders, setOrders] = useState([])
+    const [orders, setOrders] = useState<any[]>([])
     const navigate = useNavigate();
+    const [open, setOpen] = useState(false);
     const ACCESS_TOKEN = Cookies.get("restaurant");
     const headers = {
         'Content-Type': 'application/json',
@@ -26,11 +30,17 @@ const Orders = (() :JSX.Element =>{
     useEffect(() => {
         updateBackdropValue(true);
         getAllMyOrders();
+
+        socket.on("newOrderToRestaurant", (message: string) => {
+            setOpen(true);
+            getAllMyOrders()
+        });
+
     }, []);
 
     const getAllMyOrders = () => {
-        setOrders([]);
         updateBackdropValue(true);
+        setOrders([]);
         axios.get("http://localhost:8080/api/v1/order/my-all", {headers: headers})
             .then((r:any) => {
                 setOrders(r.data.data);
@@ -85,6 +95,10 @@ const Orders = (() :JSX.Element =>{
                 updateBackdropValue(false)
             });
     }
+
+    const handleClose = () => {
+        setOpen(false);
+    };
   return (
       <section className={"p-20 pt-10 border m-56 mt-1 rounded-xl shadow"}>
           <div>
@@ -109,6 +123,16 @@ const Orders = (() :JSX.Element =>{
                   })
               }
           </div>
+          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical:'bottom',horizontal: 'right' }}>
+              <Alert
+                  onClose={handleClose}
+                  severity="success"
+                  variant="filled"
+                  sx={{ width: '100%' }}
+              >
+                  You Got New Order !
+              </Alert>
+          </Snackbar>
       </section>
   )
 })

@@ -12,7 +12,7 @@ import RestaurantHome from "./view/restaurant/restauranthome.tsx";
 import CreateMenu from "./view/restaurant/createMenu.tsx";
 import RestaurantHeader from "./components/layout/restaurantheader.tsx";
 import Mymenus from "./view/restaurant/mymenus.tsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {BackdropContext, CartContext} from "./context/orderRouteContext.ts";
 import CircularProgress from "@mui/material/CircularProgress";
 import {Backdrop} from "@mui/material";
@@ -21,8 +21,9 @@ import SignIn from "./view/signin.tsx";
 import SignUp from './view/signup.tsx';
 import Orders from "./view/restaurant/orders.tsx";
 import MyOrders from "./view/orders.tsx";
+import { io } from "socket.io-client";
 
-
+export const socket = io("http://localhost:8080");
 function App() {
     const apikey = 'AhTs1NKD6MM19FxIHxv3kseOeji1BrzSQfcutMcPm1xxa5delVftdkNjkOQRkZ0O';
     const [backdropValue, setBackdropValue] = useState(false);
@@ -38,9 +39,14 @@ function App() {
        cart
     };
 
+    useEffect(() => {
 
 
 
+        return () => {
+            // socket.disconnect();
+        };
+    }, []);
 
         return (
             <>

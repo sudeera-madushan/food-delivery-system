@@ -72,7 +72,7 @@ function Menu():JSX.Element {
         }
         handleClick()
         cart.push(data)
-        console.log(cart)
+        navigate('/menu-list');
     };
     const handleClick = () => {
         setOpen(true);

@@ -6,6 +6,7 @@ import Cookies from 'js-cookie';
 import Input from "../components/input/input.tsx";
 import Button from "../components/button/button.tsx";
 import {BackdropContext} from "../context/orderRouteContext.ts";
+import {socket} from "../App.tsx";
 /**
  * author : Sudeera Madushan
  * date : 1/15/2024
@@ -48,9 +49,11 @@ const SignIn = () :JSX.Element => {
             .then(r => {
 
                 if (r.data.data.user){
+                    socket.emit('userSignIn', r.data.data.user._id);
                     Cookies.set("user", r.data.data.accessToken);
                     navigate('/menu-list');
                 } else if (r.data.data.restaurant){
+                    socket.emit('userSignIn', r.data.data.restaurant._id);
                     Cookies.set("restaurant", r.data.data.accessToken);
                     navigate('/restaurant/my-menus');
                 }

@@ -88,7 +88,7 @@ const Header = () => {
                         {
                             loged ?
                                 <li className={'max-[856px]:hover:rounded max-[856px]:mr-[5px]'}>
-                                    <CiUser className={'text-2xl bold'}/></li> :
+                                    <Link to={'/sign-in'}><CiUser className={'text-2xl bold'}/></Link></li> :
                                 <Link to={'/sign-in'}><li className={'max-[856px]:hover:rounded max-[856px]:mr-[5px]'}>Sign In</li></Link>
                         }
                     </ul>

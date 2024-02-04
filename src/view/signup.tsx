@@ -115,15 +115,6 @@ const SignUp = () :JSX.Element => {
             const provider = new GoogleAuthProvider();
             const auth = getAuth(app);
             const result = await signInWithPopup(auth, provider);
-            // const formData = {
-            //     email: result.user.email
-            // }
-            // const userId = await signWithGoogle(formData);
-            // if (type === 'COMPANY') {
-            //     navigate('company', {state: {id: userId}})
-            // } else if (type === 'JOB_SEEKER') {
-            //     navigate('job-seeker', {state: {id: userId}})
-            // }
             console.log(result)
         } catch (er) {
             console.log("couldn't sign in google", er);
