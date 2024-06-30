@@ -1,6 +1,7 @@
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import Swal from 'sweetalert2';
 
-const CheckoutForm = () => {
+const CheckoutForm = (prop: {payed: boolean, pay: Function}) => {
     const stripe = useStripe();
     const elements = useElements();
 
@@ -20,13 +21,24 @@ const CheckoutForm = () => {
 
         if (error) {
             console.log('[error]', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!',
+            })
         } else {
             console.log('[PaymentMethod]', paymentMethod);
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'Payment successful!',
+            })
+            prop.pay();
         }
     };
 
     return (
-        <form onSubmit={handleSubmit} className="max-w-xl mx-auto p-6 space-y-4">
+        <form onSubmit={handleSubmit} className={`${prop.payed?'hidden ':'block '} max-w-xl mx-auto p-6 space-y-4`}>
             <div className="flex space-x-4">
                 <input className="flex-1 p-2 border border-gray-300 rounded" placeholder="First name" />
                 <input className="flex-1 p-2 border border-gray-300 rounded" placeholder="Last name" />

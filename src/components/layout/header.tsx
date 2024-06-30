@@ -32,7 +32,8 @@ const Header = () => {
 
     const navigate = useNavigate();
     const auth = () => {
-        axios.post("http://localhost:8080/api/v1/user/auth",{} ,{headers: headers})
+        try {
+            axios.post("http://localhost:8080/api/v1/user/auth",{} ,{headers: headers})
             .then(r => {
                 if (r.data.data.restaurant){
                     setLoged(true)
@@ -45,6 +46,11 @@ const Header = () => {
             .catch(e => {
                 setLoged(false)
             })
+        } catch (error) {
+            console.error(error)
+            setLoged(false)
+        }
+       
     }
 
     const openMenu = () => {

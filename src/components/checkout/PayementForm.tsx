@@ -4,12 +4,12 @@ import CheckoutForm from "./CheckOut";
 
 const stripePromise = loadStripe('pk_test_qblFNYngBkEdjEZ16jxxoWSM');
 
-const PaymentForm= ():JSX.Element  => {
+const PaymentForm= (prop: {payed: boolean, pay: Function}):JSX.Element  => {
 
     return (
 
-        <Elements stripe={stripePromise}>
-            <CheckoutForm/>
+        <Elements stripe={stripePromise} >
+            <CheckoutForm payed={prop.payed} pay={prop.pay}/>
         </Elements>
     );
 };

@@ -6,7 +6,7 @@ export enum Type {
     PENDING,DONE
 }
 interface Props {
-    state:Type,
+    state:boolean,
     show:boolean
 }
 
@@ -22,7 +22,7 @@ export function Progress(props:Props):JSX.Element {
         //     setShowCheck(true);
         // }, props.timeout);
 
-        if (props.state === Type.DONE) {
+        if (props.state) {
             setShowCircular(false);
             setShowCheck(true);
         }

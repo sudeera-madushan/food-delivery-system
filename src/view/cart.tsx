@@ -22,6 +22,7 @@ function Cart():JSX.Element {
     const [taxCost, setTaxCost] = useState(49)
     const [toPayCost, setToPayCost] = useState(0)
     const [distance, setDistance] = useState(0)
+    const [payed, setPayed] = useState(false)
     const ACCESS_TOKEN = Cookies.get("user");
     const headers = {
         'Content-Type': 'application/json',
@@ -100,6 +101,8 @@ function Cart():JSX.Element {
 
 
     const orderNow = () => {
+        if (payed) {
+        updateBackdropValue(true)
         let cartData:any = [];
         cart.map((v) => {
             cartData.push({menu:v.menu._id, qty: v.qty, price: v.menu.price})
@@ -123,7 +126,7 @@ function Cart():JSX.Element {
                     title: "Success!",
                     text: "Order Added successfully!"
                 });
-                navigate('/my-orders');
+                navigate('/orders');
                 updateBackdropValue(false)
             })
             .catch((e:any) => {
@@ -135,8 +138,12 @@ function Cart():JSX.Element {
                 });
                 updateBackdropValue(false)
             })
+        }
     }
 
+    const pay = () => {
+        setPayed(true)
+    }
     return (
         <section className={'flex justify-around'}>
             {
@@ -155,7 +162,7 @@ function Cart():JSX.Element {
                     <CustomizedDialogs open={openMap} getLocation={getLocation}/>
                 </div>
                 <h1 className={'m-5 mt-0 font-agbalumo text-2xl p-2 rounded-xl shadow'}>{myAddress}</h1>
-                <PaymentForm />
+                <PaymentForm payed={payed} pay={pay}/>
                 <div className={'p-10 px-20'}>
                     <div className={'flex justify-between pt-10 py-1 border-b'}>
                         <h1 className={''}>Total </h1>
